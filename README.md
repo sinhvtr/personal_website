@@ -42,16 +42,6 @@ Since this is a static website, running it locally is incredibly simple:
 2. Open the directory and simply double-click on `index.html` to view it in your browser.
 3. Alternatively, you can use an extension like **Live Server** in VS Code for live reloading during development.
 
-## 🌐 Deployment (GitHub Pages)
-
-This website is specifically structured to be hosted on **GitHub Pages**.
-
-1. Create a repository on GitHub (e.g., `sinhvtr.github.io` or any project name).
-2. Push all the files (`index.html`, `style.css`, `script.js`) to the `main` branch.
-3. Go to **Settings > Pages** in your GitHub repository.
-4. Select `main` branch as the source and save.
-5. Your website will be live in a few minutes!
-
 ## 📬 Contact
 
 If you have any questions or would like to collaborate on research, please feel free to reach out to me via the contact form on the website or connect with me on [LinkedIn](https://www.linkedin.com/in/sinh-vu-trong/).

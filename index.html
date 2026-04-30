@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="page_title">Vũ Trọng Sinh | Portfolio Khoa Học</title>
+    <meta name="description"
+        content="Trang web cá nhân của Tiến sĩ Vũ Trọng Sinh - Chuyên gia về Trí tuệ nhân tạo, Xử lý ngôn ngữ tự nhiên, RPA và Ứng dụng.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">Vũ Trọng Sinh</a>
+            <ul class="nav-links">
+                <li><a href="#about" data-i18n="nav_about">Về tôi</a></li>
+                <li><a href="#experience" data-i18n="nav_experience">Công tác</a></li>
+                <li><a href="#teaching" data-i18n="nav_teaching">Giảng dạy</a></li>
+                <li><a href="#research" data-i18n="nav_research">Nghiên cứu</a></li>
+                <!-- <li><a href="#projects" data-i18n="nav_projects">Dự án</a></li> -->
+                <li><a href="#blog" data-i18n="nav_blog">Blog</a></li>
+                <li><a href="#contact" data-i18n="nav_contact">Liên hệ</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button id="lang-toggle" class="lang-toggle" aria-label="Toggle Language">
+                    <span class="lang-text">EN</span>
+                </button>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="hamburger">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="container hero-container">
+            <div class="hero-content reveal">
+                <h1>Vũ Trọng Sinh</h1>
+                <h2 class="subtitle" data-i18n="hero_subtitle">Tiến sĩ Khoa học Thông tin | Giảng viên Đại học</h2>
+                <p class="tagline" data-i18n="hero_tagline">Nghiên cứu và ứng dụng Trí tuệ Nhân tạo (AI), Xử lý Ngôn ngữ
+                    Tự nhiên (NLP) & Robot Process Automation (RPA) để giải quyết các bài toán thực tiễn trong Tài chính
+                    và Giáo dục. Hợp tác giảng dạy các khóa đào tạo chuyên đề ngắn hạn trong lĩnh vực Chuyển đổi số, AI,
+                    RPA. </p>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn btn-primary" data-i18n="btn_contact">Liên hệ Hợp tác</a>
+                    <a href="#research" class="btn btn-outline" data-i18n="btn_research">Công bố khoa học</a>
+                </div>
+                <div class="social-links">
+                    <a href="mailto:sinhvtr@gmail.com" target="_blank" aria-label="Email"><i
+                            class="fas fa-envelope"></i></a>
+                    <a href="https://www.linkedin.com/in/sinh-vu-trong/" target="_blank" aria-label="LinkedIn"><i
+                            class="fab fa-linkedin-in"></i></a>
+                    <a href="https://github.com/sinhvtr" target="_blank" aria-label="GitHub"><i
+                            class="fab fa-github"></i></a>
+                    <a href="https://scholar.google.com/citations?user=cxUoltwAAAAJ" target="_blank"
+                        aria-label="Google Scholar"><i class="fas fa-graduation-cap"></i></a>
+                </div>
+            </div>
+            <div class="hero-image reveal">
+                <div class="image-placeholder">
+                    <!-- Replace with real image later -->
+                    <img src="profile_img.jpg" alt="Avatar">
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About & Skills Section -->
+    <section id="about" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title reveal" data-i18n="about_title">Về Tôi & Kỹ Năng</h2>
+            <div class="about-grid">
+                <div class="about-text reveal">
+                    <p data-i18n="about_p1">Tôi là <strong>Vũ Trọng Sinh</strong>, tốt nghiệp Tiến sĩ chuyên ngành Khoa
+                        học Thông tin tại Viện Khoa học và Công nghệ tiên tiến Nhật Bản (JAIST) năm 2020. Tôi có niềm
+                        đam mê sâu sắc với việc khám phá tri thức từ dữ liệu và ứng dụng công nghệ để
+                        tối ưu hóa quy trình công việc.</p>
+                    <p data-i18n="about_p2">Lĩnh vực nghiên cứu của tôi bao gồm: Trí tuệ Nhân tạo (AI), Xử lý Ngôn ngữ
+                        tự nhiên (NLP) và Tự động hóa quy trình bằng Robot (RPA). Hiện tại, tôi đang tập trung vào việc
+                        đưa các giải pháp công nghệ tiên tiến vào thực tiễn các ngành Tài chính và Giáo dục, nhằm mang
+                        lại giá trị thiết thực cho cộng đồng và doanh nghiệp.</p>
+                    <p data-i18n="about_p3">Tôi cũng giảng dạy các môn học liên quan đến lĩnh vực nghiên cứu của mình
+                        tại Học viện Ngân hàng. Bên cạnh đó, tôi còn hợp tác giảng dạy các khóa đào tạo ngắn hạn
+                        trong lĩnh vực Chuyển đổi số, AI, RPA cho các doanh nghiệp và tổ chức.</p>
+                </div>
+                <div class="skills-container reveal">
+                    <div class="skill-category">
+                        <h3 data-i18n="skills_research_title">Nghiên cứu & Chuyên môn</h3>
+                        <div class="skill-tags">
+                            <span class="tag">Generative Artificial Intelligence (GenAI)</span>
+                            <span class="tag">Machine Learning</span>
+                            <span class="tag">Natural Language Processing (NLP)</span>
+                            <span class="tag">Visual Question Answering</span>
+                            <span class="tag">Robotic Process Automation (RPA)</span>
+                            <span class="tag">Data Science</span>
+                        </div>
+                    </div>
+                    <div class="skill-category mt-3">
+                        <h3 data-i18n="skills_app_title">Ứng dụng thực tiễn</h3>
+                        <div class="skill-tags">
+                            <span class="tag">Fintech</span>
+                            <span class="tag">EdTech</span>
+                            <span class="tag">Business Process Optimization</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="section">
+        <div class="container">
+            <h2 class="section-title reveal" data-i18n="exp_title">Quá Trình Công Tác</h2>
+            <div class="timeline reveal">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date" data-i18n="exp_1_date">2013 - Hiện tại</div>
+                    <div class="timeline-content">
+                        <h3 data-i18n="exp_1_title">Giảng viên & Nghiên cứu viên</h3>
+                        <h4 data-i18n="exp_1_org">Đại học [Tên trường Đại học]</h4>
+                        <p data-i18n="exp_1_desc">Giảng dạy các học phần chuyên ngành Công nghệ Thông tin. Hướng dẫn
+                            sinh viên nghiên cứu khoa học. Tham gia và chủ trì các dự án nghiên cứu cấp trường/bộ.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">2020 - 2023</div>
+                    <div class="timeline-content">
+                        <h3 data-i18n="exp_2_title">Nghiên cứu sinh Tiến sĩ</h3>
+                        <h4 data-i18n="exp_2_org">[Tên Viện/Trường]</h4>
+                        <p data-i18n="exp_2_desc">Thực hiện luận án Tiến sĩ chuyên ngành Khoa học Thông tin với đề tài
+                            liên quan đến Ứng dụng NLP trong phân tích dữ liệu văn bản tiếng Việt.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">2017 - 2020</div>
+                    <div class="timeline-content">
+                        <h3 data-i18n="exp_3_title">Nghiên cứu sinh Tiến sĩ</h3>
+                        <h4 data-i18n="exp_3_org">[Tên Viện/Trường]</h4>
+                        <p data-i18n="exp_3_desc">Thực hiện luận án Tiến sĩ chuyên ngành Khoa học Thông tin với đề tài
+                            liên quan đến Ứng dụng NLP trong phân tích dữ liệu văn bản tiếng Việt.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Teaching Section -->
+    <section id="teaching" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title reveal" data-i18n="teaching_title">Giảng Dạy & Đào Tạo</h2>
+            <div class="grid-2-col">
+                <div class="card reveal">
+                    <div class="card-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                    <h3 data-i18n="teaching_courses_title">Các Môn Học Giảng Dạy</h3>
+                    <ul class="styled-list">
+                        <li data-i18n="course_1">Khai phá dữ liệu (Data Mining)</li>
+                        <li data-i18n="course_2">Trí tuệ Nhân tạo (Artificial Intelligence)</li>
+                        <li data-i18n="course_3">Xử lý Ngôn ngữ Tự nhiên (NLP)</li>
+                        <li data-i18n="course_4">Hệ thống Thông tin Quản lý</li>
+                        <li data-i18n="course_5">Hệ thống Thông tin Quản lý</li>
+                        <li data-i18n="course_6">Hệ thống Thông tin Quản lý</li>
+                    </ul>
+                </div>
+                <div class="card reveal">
+                    <div class="card-icon"><i class="fas fa-certificate"></i></div>
+                    <h3 data-i18n="teaching_short_title">Khóa Học Ngắn Hạn & Đào Tạo</h3>
+                    <ul class="styled-list">
+                        <li data-i18n="short_1">Ứng dụng RPA trong Doanh nghiệp (Cơ bản & Nâng cao)</li>
+                        <li data-i18n="short_2">Phân tích Dữ liệu cho Tài chính</li>
+                        <li data-i18n="short_3">AI cho Giáo dục: Công cụ và Phương pháp</li>
+                        <li data-i18n="short_4">AI cho Giáo dục: Công cụ và Phương pháp</li>
+                    </ul>
+                    <div class="mt-3">
+                        <a href="https://docs.google.com/spreadsheets/d/1wIaTmwyQDtJmed0iiO2BJf4ZePqcL3Fdv2K76Bem3_E/edit?gid=0#gid=0"
+                            target="_blank" class="read-more">
+                            <span data-i18n="view_full_list">Xem danh sách đầy đủ</span> <i
+                                class="fas fa-external-link-alt" style="margin-left: 5px;"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Research & Publications Section -->
+    <section id="research" class="section">
+        <div class="container">
+            <h2 class="section-title reveal" data-i18n="research_title">Nghiên Cứu & Công Bố Khoa Học</h2>
+
+            <div class="publications-list reveal">
+                <!-- Publication Item 1 -->
+                <div class="pub-item">
+                    <div class="pub-year">2025</div>
+                    <div class="pub-details">
+                        <h4><a href="#" data-i18n="pub_1_title">Exploring the Application of Visual Question Answering
+                                (VQA) for Classroom Activity Monitoring</a></h4>
+                        <p class="authors"><strong>Vu, Sinh Trong</strong>, Pham, Hieu Trung, Nguyen, Dung Manh, Hoang,
+                            Hieu Minh, Le, Nhu Hoang, Pham, Thu Ha, Mai, Tai Tan</p>
+                        <p class="journal" data-i18n="pub_1_journal"><em>Proceedings of the 2nd ACM Workshop in
+                                AI-powered Question & Answering Systems</em>, pp. 43--48.</p>
+                    </div>
+                </div>
+                <!-- Publication Item 2 -->
+                <div class="pub-item">
+                    <div class="pub-year">2024</div>
+                    <div class="pub-details">
+                        <h4><a href="#" data-i18n="pub_2_title">A ChatGPT-based approach for questions generation in
+                                higher education</a></h4>
+                        <p class="authors"><strong>Vu, Sinh Trong</strong>, Truong, Huong Thu, Do, Oanh Tien, Le, Tu
+                            Anh, Mai, Tai Tan</p>
+                        <p class="journal" data-i18n="pub_2_journal"><em>The 1st ACM Workshop on AI-Powered Q&A Systems
+                                for Multimedia</em>, pp. 13--18.</p>
+                    </div>
+                </div>
+                <!-- Publication Item 3 -->
+                <div class="pub-item">
+                    <div class="pub-year">2022</div>
+                    <div class="pub-details">
+                        <h4><a href="#" data-i18n="pub_3_title">Abstract meaning representation for legal documents: an
+                                empirical research on a human-annotated dataset</a></h4>
+                        <p class="authors"><strong>Vu, Sinh Trong</strong>, Le Nguyen, Minh, Satoh, Ken</p>
+                        <p class="journal" data-i18n="pub_3_journal"><em>Artificial Intelligence and Law</em>, 30(2),
+                            pp. 221--243, Springer.</p>
+                    </div>
+                </div>
+                <!-- Publication Item 4 -->
+                <div class="pub-item">
+                    <div class="pub-year">2022</div>
+                    <div class="pub-details">
+                        <h4><a href="#" data-i18n="pub_4_title">An efficient and practical approach for
+                                privacy-preserving Naive Bayes classification</a></h4>
+                        <p class="authors">Vu, Duy-Hien, <strong>Vu, Trong-Sinh</strong>, Luong, The-Dung</p>
+                        <p class="journal" data-i18n="pub_4_journal"><em>Journal of information Security and
+                                Applications</em>, 68, 103215, Elsevier.</p>
+                    </div>
+                </div>
+                <!-- Publication Item 5 -->
+                <div class="pub-item">
+                    <div class="pub-year">2020</div>
+                    <div class="pub-details">
+                        <h4><a href="#" data-i18n="pub_5_title">Exploiting CBOW and LSTM models to generate trace
+                                representation for process mining</a></h4>
+                        <p class="authors">Bui, Hong-Nhung, <strong>Vu, Trong-Sinh</strong>, Nguyen, Hien-Hanh, Nguyen,
+                            Tri-Thanh, Ha, Quang-Thuy</p>
+                        <p class="journal" data-i18n="pub_5_journal"><em>Asian Conference on Intelligent Information and
+                                Database Systems</em>, pp. 35--46, Springer.</p>
+                    </div>
+                </div>
+                <!-- Publication Item 6 -->
+                <div class="pub-item">
+                    <div class="pub-year">2019</div>
+                    <div class="pub-details">
+                        <h4><a href="#" data-i18n="pub_6_title">A Study on Self-attention Mechanism for AMR-to-text
+                                Generation</a></h4>
+                        <p class="authors"><strong>Sinh, Vu Trong</strong>, Le Minh, Nguyen</p>
+                        <p class="journal" data-i18n="pub_6_journal"><em>Natural Language Processing and Information
+                                Systems (NLDB 2019)</em>, pp. 321, Springer.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-3 reveal">
+                <a href="https://scholar.google.com/citations?hl=en&user=cxUoltwAAAAJ" class="btn btn-outline"
+                    data-i18n="btn_scholar"><i class="fab fa-google"></i> Xem thêm trên
+                    Google Scholar</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Projects Section (Temporarily hidden)
+    <section id="projects" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title reveal" data-i18n="projects_title">Dự Án Nổi Bật</h2>
+            <div class="grid-3-col">
+                <div class="project-card reveal">
+                    <div class="project-img">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3 data-i18n="proj_1_title">Hệ thống Hỏi đáp Thông minh (Chatbot) cho Tư vấn Tuyển sinh</h3>
+                        <p data-i18n="proj_1_desc">Ứng dụng NLP và mô hình Deep Learning để xây dựng chatbot hỗ trợ tư
+                            vấn tuyển sinh tự động cho trường Đại học, giảm tải 80% công việc cho tư vấn viên.</p>
+                        <div class="project-tags">
+                            <span class="tag">NLP</span>
+                            <span class="tag">Chatbot</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card reveal">
+                    <div class="project-img">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3 data-i18n="proj_2_title">Phần mềm Phân tích rủi ro Tín dụng</h3>
+                        <p data-i18n="proj_2_desc">Mô hình Machine Learning dự đoán rủi ro tín dụng cá nhân dựa trên dữ
+                            liệu phi cấu trúc và lịch sử giao dịch.</p>
+                        <div class="project-tags">
+                            <span class="tag">Machine Learning</span>
+                            <span class="tag">Finance</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card reveal">
+                    <div class="project-img">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3 data-i18n="proj_3_title">Triển khai RPA cho Doanh nghiệp Kế toán</h3>
+                        <p data-i18n="proj_3_desc">Xây dựng quy trình robot tự động trích xuất dữ liệu từ hóa đơn và
+                            nhập liệu vào hệ thống ERP.</p>
+                        <div class="project-tags">
+                            <span class="tag">RPA</span>
+                            <span class="tag">Automation</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    -->
+
+    <!-- Blog / Articles Section -->
+    <section id="blog" class="section">
+        <div class="container">
+            <h2 class="section-title reveal" data-i18n="blog_title">Bài Viết Gần Đây</h2>
+            <div class="grid-3-col">
+                <article class="blog-card reveal">
+                    <div class="blog-date" data-i18n="blog_1_date">15 Tháng 5, 2024</div>
+                    <h3><a href="#" data-i18n="blog_1_title">Tương lai của RPA kết hợp với Generative AI</a></h3>
+                    <p data-i18n="blog_1_desc">Sự kết hợp giữa RPA truyền thống và các mô hình AI tạo sinh đang mở ra
+                        một kỷ nguyên mới cho tự động hóa thông minh (Intelligent Automation)...</p>
+                    <a href="https://tapchinganhang.gov.vn/ung-dung-hoc-tap-lien-ket-trong-cham-diem-tin-dung-va-an-ninh-tai-chinh-tai-viet-nam-17103.html"
+                        class="read-more"><span data-i18n="read_more">Đọc tiếp</span> <i
+                            class="fas fa-arrow-right"></i></a>
+                </article>
+                <article class="blog-card reveal">
+                    <div class="blog-date" data-i18n="blog_2_date">02 Tháng 4, 2024</div>
+                    <h3><a href="#" data-i18n="blog_2_title">Ứng dụng xử lý ngôn ngữ tự nhiên trong EdTech</a></h3>
+                    <p data-i18n="blog_2_desc">Công nghệ NLP có thể giúp chấm điểm tự động bài luận, cá nhân hóa lộ
+                        trình học tập và tạo ra gia sư ảo thông minh...</p>
+                    <a href="https://tapchinganhang.gov.vn/genai-tuong-lai-ca-nhan-hoa-dich-vu-khach-hang-tai-cac-ngan-hang-thuong-mai-viet-nam-15887.html"
+                        class="read-more"><span data-i18n="read_more">Đọc tiếp</span> <i
+                            class="fas fa-arrow-right"></i></a>
+                </article>
+                <article class="blog-card reveal">
+                    <div class="blog-date" data-i18n="blog_3_date">10 Tháng 1, 2024</div>
+                    <h3><a href="#" data-i18n="blog_3_title">Kinh nghiệm học tập và nghiên cứu ngành Khoa học Thông
+                            tin</a></h3>
+                    <p data-i18n="blog_3_desc">Chia sẻ hành trình từ một sinh viên đến khi hoàn thành luận án Tiến sĩ,
+                        cùng những lời khuyên cho các bạn trẻ đam mê nghiên cứu khoa học...</p>
+                    <a href="https://tapchinganhang.gov.vn/nang-cao-chat-luong-chatbot-cham-soc-khach-hang-tai-cac-ngan-hang-thuong-mai-viet-nam-10533.html"
+                        class="read-more"><span data-i18n="read_more">Đọc tiếp</span> <i
+                            class="fas fa-arrow-right"></i></a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section id="certifications" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title reveal" data-i18n="certs_title">Chứng Chỉ & Giải Thưởng</h2>
+            <div class="cert-grid reveal">
+                <a href="https://www.coursera.org/account/accomplishments/verify/5QPKZHTXIC0G" target="_blank"
+                    class="cert-item">
+                    <i class="fas fa-award"></i>
+                    <p data-i18n="cert_1">AI for App Building</p>
+                </a>
+                <a href="https://drive.google.com/file/d/17gaPAuCD1yzYrzJC3nMMU7lUg3tg8-AB/view?usp=sharing"
+                    target="_blank" class="cert-item">
+                    <i class="fas fa-award"></i>
+                    <p data-i18n="cert_2">PCAP – Certified Associate in Python Programming</p>
+                </a>
+                <a href="https://www.coursera.org/account/accomplishments/specialization/certificate/GPRBYRW6QBJ3"
+                    target="_blank" class="cert-item">
+                    <i class="fas fa-award"></i>
+                    <p data-i18n="cert_3">Google Project Management: Specialization</p>
+                </a>
+                <a href="https://drive.google.com/file/d/1jEYyH1ntcAOux2Bd59PCnlznKbaUT6XK/view?usp=sharing"
+                    target="_blank" class="cert-item">
+                    <i class="fas fa-award"></i>
+                    <p data-i18n="cert_4">Oracle Certified Foundations Associate</p>
+                </a>
+                <a href="https://drive.google.com/file/d/1vabAfMkGoslwMIiHFoN79-OD0hROEdA0/view?usp=sharing"
+                    target="_blank" class="cert-item">
+                    <i class="fas fa-award"></i>
+                    <p data-i18n="cert_5">IC3 Digital Literacy Certification</p>
+                </a>
+                <a href="https://drive.google.com/file/d/1mk-GWx3OaBk9muuPE2KvGDs7HVqGiYLZ/view?usp=sharing"
+                    target="_blank" class="cert-item">
+                    <i class="fas fa-award"></i>
+                    <p data-i18n="cert_6">Financial Data Analysis and Decision-making in the Advert of AI</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <h2 class="section-title reveal" data-i18n="contact_title">Liên Hệ</h2>
+            <div class="contact-grid">
+                <div class="contact-info reveal">
+                    <h3 data-i18n="contact_info_title">Thông Tin Liên Hệ</h3>
+                    <p data-i18n="contact_desc">Tôi luôn sẵn sàng thảo luận về các cơ hội hợp tác nghiên cứu, giảng dạy
+                        hoặc tư vấn triển khai dự án AI/RPA.</p>
+                    <ul class="contact-list">
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>sinhvtr@gmail.com</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span data-i18n="contact_location">Thanh Xuân, Hà Nội, Việt Nam</span>
+                        </li>
+                        <li>
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://www.linkedin.com/in/sinh-vu-trong/">linkedin.com/in/sinh-vu-trong</a>
+                        </li>
+                        <li>
+                            <i class="fab fa-github"></i>
+                            <a href="https://github.com/sinhvtr">github.com/sinhvtr</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-graduation-cap"></i>
+                            <a href="https://scholar.google.com/citations?hl=en&user=cxUoltwAAAAJ">Google Scholar
+                                Profile</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="contact-form reveal">
+                    <form id="contactForm" action="https://formspree.io/f/your_form_id" method="POST">
+                        <div class="form-group">
+                            <input type="text" name="name" data-i18n-placeholder="form_name" placeholder="Họ và tên"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" name="email" placeholder="Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="subject" data-i18n-placeholder="form_subject"
+                                placeholder="Tiêu đề">
+                        </div>
+                        <div class="form-group">
+                            <textarea name="message" rows="5" data-i18n-placeholder="form_message"
+                                placeholder="Nội dung tin nhắn" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><span data-i18n="btn_submit">Gửi Tin Nhắn</span>
+                            <i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container text-center">
+            <p>&copy; <span id="year">2026</span> Vũ Trọng Sinh. <span data-i18n="footer_rights">All rights
+                    reserved.</span></p>
+            <p class="small-text"><span data-i18n="footer_design">Designed by</span> <i
+                    class="fas fa-heart text-danger"></i> <span data-i18n="footer_for">for Personal Profile.</span></p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+
+</html>

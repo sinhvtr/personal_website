@@ -28,6 +28,7 @@ const ui = {
     btnNextQ: document.getElementById('btn-next-q'),
     quickJumpInput: document.getElementById('quick-jump-input'),
     btnQuickJump: document.getElementById('btn-quick-jump'),
+    btnShowAnswer: document.getElementById('btn-show-answer'),
     
     explanationBox: document.getElementById('explanation-box'),
     correctAnswerText: document.getElementById('correct-answer-text'),
@@ -192,6 +193,13 @@ ui.btnQuickJump.addEventListener('click', () => {
     const index = currentQuestions.findIndex(q => q.stt === stt);
     if (index !== -1) goToQuestion(index);
     else alert('Không tìm thấy câu hỏi số ' + stt);
+});
+
+ui.btnShowAnswer.addEventListener('click', () => {
+    if (mode === 'practice' && !isTimeUp) {
+        clearInterval(timerInterval);
+        handleTimeUp();
+    }
 });
 ui.btnRetryExam.addEventListener('click', startExam);
 

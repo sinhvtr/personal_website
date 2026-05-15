@@ -187,9 +187,10 @@ h2 {
 }
 
 .menu-buttons .btn {
-    width: 250px;
+    width: 320px;
     height: 60px;
     font-size: 1.2rem;
+    white-space: nowrap;
 }
 
 .loading {

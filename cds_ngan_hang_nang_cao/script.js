@@ -50,85 +50,12 @@ let currentQuestions = [];
 let currentQuestionIndex = 0;
 let mode = ''; // 'practice' or 'exam'
 let timerInterval;
-let timeElapsed = 0;
+let timeLeft = 15;
 let currentSelection = null;
 let currentSelectionTime = 0; // time taken to select
 let examResults = [];
 let isTimeUp = false;
 let startTime = 0;
-
-// CSV Parser
-function parseCSV(text) {
-    let result = [];
-    let row = [];
-    let inQuotes = false;
-    let currentValue = "";
-    
-    // Remove BOM if present
-    if (text.charCodeAt(0) === 0xFEFF) {
-        text = text.slice(1);
-    }
-    
-    for (let i = 0; i < text.length; i++) {
-        let char = text[i];
-        let nextChar = text[i + 1];
-        
-        if (inQuotes) {
-            if (char === '"' && nextChar === '"') {
-                currentValue += '"';
-                i++; // skip next
-            } else if (char === '"') {
-                inQuotes = false;
-            } else {
-                currentValue += char;
-            }
-        } else {
-            if (char === '"') {
-                inQuotes = true;
-            } else if (char === ';') {
-                row.push(currentValue.trim());
-                currentValue = "";
-            } else if (char === '\n' || char === '\r') {
-                if (char === '\r' && nextChar === '\n') {
-                    i++; // skip \n
-                }
-                row.push(currentValue.trim());
-                if (row.length > 1 || row[0] !== "") {
-                    result.push(row);
-                }
-                row = [];
-                currentValue = "";
-            } else {
-                currentValue += char;
-            }
-        }
-    }
-    if (currentValue !== "" || row.length > 0) {
-        row.push(currentValue.trim());
-        result.push(row);
-    }
-    return result;
-}
-
-function adjustAnswerTextSizes() {
-    ui.answerBtns.forEach(btn => {
-        const textEl = btn.querySelector('.answer-text');
-        const content = textEl.textContent || '';
-        let fontSize = 1.3;
-
-        if (content.length > 120) {
-            fontSize = 0.95;
-        } else if (content.length > 100) {
-            fontSize = 1.0;
-        } else if (content.length > 80) {
-            fontSize = 1.1;
-        } else if (content.length > 60) {
-            fontSize = 1.2;
-        }
-
-        textEl.style.fontSize = fontSize + 'rem';
-    });
-}
 
 // Load Data
 async function loadQuestions() {
@@ -137,33 +64,43 @@ async function loadQuestions() {
     ui.btnExam.disabled = true;
     
     try {
-        const response = await fetch('questions_bank.csv');
-        if (!response.ok) throw new Error('Cannot load CSV');
+        const response = await fetch('questions_bank_advanced.xlsx');
+        if (!response.ok) throw new Error('Cannot load XLSX');
         
-        const csvText = await response.text();
-        const rows = parseCSV(csvText);
+        const arrayBuffer = await response.arrayBuffer();
+        const workbook = XLSX.read(arrayBuffer, { type: 'array' });
         
-        // Skip header
-        const dataRows = rows.slice(1);
+        allQuestions = [];
+        let globalIndex = 1;
         
-        allQuestions = dataRows.map((row, index) => {
-            // Columns: 0:STT, 1:Mảng, 2:Mảng con, 3:Câu hỏi, 4:A, 5:B, 6:C, 7:D, 8:Đáp án, 9:Giải thích, 10:Điều khoản
-            if (row.length < 9) return null;
-            return {
-                stt: row[0] || (index + 1).toString(),
-                category: row[1],
-                question: row[3],
-                options: {
-                    'A': row[4],
-                    'B': row[5],
-                    'C': row[6],
-                    'D': row[7]
-                },
-                correct: (row[8] || '').trim().toUpperCase(),
-                explanation: row[9] || '',
-                clause: row[10] || ''
-            };
-        }).filter(q => q !== null && q.question);
+        workbook.SheetNames.forEach(sheetName => {
+            const sheet = workbook.Sheets[sheetName];
+            const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+            
+            // Skip header
+            const dataRows = rows.slice(1);
+            
+            dataRows.forEach(row => {
+                // Columns: 0:'STT', 1:'Mảng nội dung', 2:'Nội dung câu hỏi', 3:'Phương án A', 4:'Phương án B', 5:'Phương án C', 6:'Phương án D', 7:'Đáp án đúng', 8:'Văn bản tham chiếu/ thuyết minh', 9:'Điều khoản'
+                if (!row[2] || !row[7]) return; // Skip if no question or answer
+                
+                allQuestions.push({
+                    stt: row[0] || globalIndex.toString(),
+                    category: sheetName, // Using sheet name as category
+                    question: row[2],
+                    options: {
+                        'A': row[3] || '',
+                        'B': row[4] || '',
+                        'C': row[5] || '',
+                        'D': row[6] || ''
+                    },
+                    correct: (row[7] || '').toString().trim().toUpperCase(),
+                    explanation: row[8] || '',
+                    clause: row[9] || ''
+                });
+                globalIndex++;
+            });
+        });
         
         populateCategories();
         
@@ -299,8 +236,6 @@ function loadQuestion(index) {
     document.getElementById('answer-text-b').textContent = q.options['B'];
     document.getElementById('answer-text-c').textContent = q.options['C'];
     document.getElementById('answer-text-d').textContent = q.options['D'];
-
-    adjustAnswerTextSizes();
     
     // Reset state
     ui.answerBtns.forEach(b => {
@@ -313,8 +248,8 @@ function loadQuestion(index) {
     currentSelection = null;
     currentSelectionTime = 0;
     isTimeUp = false;
-    timeElapsed = 0;
-    ui.timerText.textContent = timeElapsed;
+    timeLeft = 15;
+    ui.timerText.textContent = timeLeft;
     startTime = Date.now();
     
     clearInterval(timerInterval);
@@ -322,16 +257,14 @@ function loadQuestion(index) {
 }
 
 function updateTimer() {
-    timeElapsed++;
-    ui.timerText.textContent = timeElapsed;
+    timeLeft--;
+    ui.timerText.textContent = timeLeft;
     
-    if (timeElapsed >= 10 && timeElapsed < 15) {
+    if (timeLeft <= 5 && timeLeft > 0) {
         ui.timerCircle.classList.add('warning');
-    } else {
-        ui.timerCircle.classList.remove('warning');
     }
     
-    if (timeElapsed >= 15) {
+    if (timeLeft <= 0) {
         clearInterval(timerInterval);
         handleTimeUp();
     }
@@ -339,7 +272,7 @@ function updateTimer() {
 
 function handleTimeUp() {
     isTimeUp = true;
-    ui.timerText.textContent = "15";
+    ui.timerText.textContent = "0";
     
     const q = currentQuestions[currentQuestionIndex];
     const correctAns = q.correct;

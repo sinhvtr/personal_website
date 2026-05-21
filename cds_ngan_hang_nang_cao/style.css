@@ -264,6 +264,19 @@ select option {
     margin-bottom: 2rem;
 }
 
+.quiz-body {
+    width: 100%;
+    max-width: none;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+#quiz-screen .question-container {
+    width: 100%;
+    max-width: none;
+}
+
 .question-number, .exam-progress {
     font-size: 1.2rem;
     font-weight: 700;
@@ -274,7 +287,7 @@ select option {
 
 .quiz-body {
     width: 100%;
-    max-width: 900px;
+    /* max-width: 900px; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -323,21 +336,24 @@ select option {
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
     width: 100%;
+    min-height: 50vh;
+    grid-auto-rows: minmax(140px, auto);
 }
 
 .answer-btn {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 1rem;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 1.5rem;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 1rem;
     text-align: left;
-    color: var(--text-dim);
+    color: var(--text-main);
     transition: all 0.2s ease;
     cursor: pointer;
-    min-height: 80px;
+    min-height: 160px;
+    height: 100%;
 }
 
 .answer-btn:hover {
@@ -382,9 +398,20 @@ select option {
 }
 
 .answer-text {
-    font-size: 1.1rem;
-    line-height: 1.4;
-    padding-top: 4px;
+    font-size: 1.35rem;
+    line-height: 1.5;
+    font-weight: 700;
+    color: #f7fbff;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 3.2rem;
+    word-break: break-word;
+    padding-top: 0;
+}
+
+.answer-text {
+    font-size: clamp(1.1rem, 1.4vw + 0.9rem, 1.5rem);
 }
 
 /* Practice Controls */

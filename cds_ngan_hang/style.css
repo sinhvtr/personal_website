@@ -582,6 +582,6 @@ select option {
         min-height: calc(100vh - 150px);
     }
     .answers-grid {
-        min-height: 55vh;
+        min-height: 50vh;
     }
 }

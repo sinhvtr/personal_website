@@ -50,7 +50,7 @@ let currentQuestions = [];
 let currentQuestionIndex = 0;
 let mode = ''; // 'practice' or 'exam'
 let timerInterval;
-let timeLeft = 15;
+let elapsedTime = 0;
 let currentSelection = null;
 let currentSelectionTime = 0; // time taken to select
 let examResults = [];
@@ -248,8 +248,8 @@ function loadQuestion(index) {
     currentSelection = null;
     currentSelectionTime = 0;
     isTimeUp = false;
-    timeLeft = 15;
-    ui.timerText.textContent = timeLeft;
+    elapsedTime = 0;
+    ui.timerText.textContent = elapsedTime;
     startTime = Date.now();
     
     clearInterval(timerInterval);
@@ -257,14 +257,14 @@ function loadQuestion(index) {
 }
 
 function updateTimer() {
-    timeLeft--;
-    ui.timerText.textContent = timeLeft;
+    elapsedTime++;
+    ui.timerText.textContent = elapsedTime;
     
-    if (timeLeft <= 5 && timeLeft > 0) {
+    if (elapsedTime >= 11 && elapsedTime < 15) {
         ui.timerCircle.classList.add('warning');
     }
     
-    if (timeLeft <= 0) {
+    if (elapsedTime >= 15) {
         clearInterval(timerInterval);
         handleTimeUp();
     }
@@ -272,7 +272,7 @@ function updateTimer() {
 
 function handleTimeUp() {
     isTimeUp = true;
-    ui.timerText.textContent = "0";
+    ui.timerText.textContent = "15";
     
     const q = currentQuestions[currentQuestionIndex];
     const correctAns = q.correct;

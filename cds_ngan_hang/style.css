@@ -333,7 +333,7 @@ select option {
     grid-auto-rows: 1fr;
     gap: 1.5rem;
     width: 100%;
-    min-height: 58vh;
+    min-height: 50vh;
 }
 
 .answer-btn {

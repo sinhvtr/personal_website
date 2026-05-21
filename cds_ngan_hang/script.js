@@ -50,7 +50,7 @@ let currentQuestions = [];
 let currentQuestionIndex = 0;
 let mode = ''; // 'practice' or 'exam'
 let timerInterval;
-let timeLeft = 15;
+let timeElapsed = 0;
 let currentSelection = null;
 let currentSelectionTime = 0; // time taken to select
 let examResults = [];
@@ -108,6 +108,26 @@ function parseCSV(text) {
         result.push(row);
     }
     return result;
+}
+
+function adjustAnswerTextSizes() {
+    ui.answerBtns.forEach(btn => {
+        const textEl = btn.querySelector('.answer-text');
+        const content = textEl.textContent || '';
+        let fontSize = 1.3;
+
+        if (content.length > 120) {
+            fontSize = 0.95;
+        } else if (content.length > 100) {
+            fontSize = 1.0;
+        } else if (content.length > 80) {
+            fontSize = 1.1;
+        } else if (content.length > 60) {
+            fontSize = 1.2;
+        }
+
+        textEl.style.fontSize = fontSize + 'rem';
+    });
 }
 
 // Load Data
@@ -279,6 +299,8 @@ function loadQuestion(index) {
     document.getElementById('answer-text-b').textContent = q.options['B'];
     document.getElementById('answer-text-c').textContent = q.options['C'];
     document.getElementById('answer-text-d').textContent = q.options['D'];
+
+    adjustAnswerTextSizes();
     
     // Reset state
     ui.answerBtns.forEach(b => {
@@ -291,8 +313,8 @@ function loadQuestion(index) {
     currentSelection = null;
     currentSelectionTime = 0;
     isTimeUp = false;
-    timeLeft = 15;
-    ui.timerText.textContent = timeLeft;
+    timeElapsed = 0;
+    ui.timerText.textContent = timeElapsed;
     startTime = Date.now();
     
     clearInterval(timerInterval);
@@ -300,14 +322,16 @@ function loadQuestion(index) {
 }
 
 function updateTimer() {
-    timeLeft--;
-    ui.timerText.textContent = timeLeft;
+    timeElapsed++;
+    ui.timerText.textContent = timeElapsed;
     
-    if (timeLeft <= 5 && timeLeft > 0) {
+    if (timeElapsed >= 10 && timeElapsed < 15) {
         ui.timerCircle.classList.add('warning');
+    } else {
+        ui.timerCircle.classList.remove('warning');
     }
     
-    if (timeLeft <= 0) {
+    if (timeElapsed >= 15) {
         clearInterval(timerInterval);
         handleTimeUp();
     }
@@ -315,7 +339,7 @@ function updateTimer() {
 
 function handleTimeUp() {
     isTimeUp = true;
-    ui.timerText.textContent = "0";
+    ui.timerText.textContent = "15";
     
     const q = currentQuestions[currentQuestionIndex];
     const correctAns = q.correct;

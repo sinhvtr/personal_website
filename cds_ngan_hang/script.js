@@ -359,7 +359,6 @@ function handleTimeUp() {
         
         examResults.push({
             questionNum: currentQuestionIndex + 1,
-            qIndex: currentQuestionIndex,
             time: currentSelection ? currentSelectionTime.toFixed(1) : 15.0,
             points: points,
             speedClass: speedClass
@@ -410,45 +409,10 @@ function showExamResults() {
         row.className = 'result-row';
         row.innerHTML = `
             <div class="res-q">Câu ${res.questionNum}</div>
-            <div class="res-action" style="flex:1; text-align:center;">
-                ${res.speedClass === 'wrong' ? `<button class="btn ghost btn-small review-btn" style="padding: 2px 8px; font-size: 0.8rem;">Xem lại</button>` : ``}
-            </div>
             <div class="res-time">${res.time}s</div>
             <div class="res-points ${pointsClass}">${res.points > 0 ? '+' : ''}${res.points} đ</div>
         `;
         ui.detailedResults.appendChild(row);
-
-        if (res.speedClass === 'wrong') {
-            const q = currentQuestions[res.qIndex];
-            const correctAns = q.correct;
-            
-            const expDiv = document.createElement('div');
-            expDiv.className = 'review-explanation';
-            expDiv.style.display = 'none';
-            expDiv.style.padding = '12px 16px';
-            expDiv.style.background = 'rgba(0, 0, 0, 0.2)';
-            expDiv.style.borderBottom = '1px solid rgba(255, 255, 255, 0.05)';
-            expDiv.style.fontSize = '0.95rem';
-            expDiv.style.color = 'var(--text-dim)';
-            expDiv.style.lineHeight = '1.5';
-            expDiv.innerHTML = `
-                <div style="margin-bottom: 8px; color: white;"><strong>Hỏi:</strong> ${q.question}</div>
-                <div style="margin-bottom: 4px;"><strong>Đáp án đúng:</strong> <span class="text-green">${correctAns} - ${q.options[correctAns]}</span></div>
-                <div style="margin-bottom: 4px;"><strong>Tài liệu:</strong> ${q.explanation || 'Không có'}</div>
-                <div><strong>Điều khoản:</strong> ${q.clause || 'Không có'}</div>
-            `;
-            ui.detailedResults.appendChild(expDiv);
-            
-            row.querySelector('.review-btn').addEventListener('click', () => {
-                if (expDiv.style.display === 'none') {
-                    expDiv.style.display = 'block';
-                    row.querySelector('.review-btn').textContent = 'Đóng';
-                } else {
-                    expDiv.style.display = 'none';
-                    row.querySelector('.review-btn').textContent = 'Xem lại';
-                }
-            });
-        }
     });
     
     ui.totalScore.textContent = total;

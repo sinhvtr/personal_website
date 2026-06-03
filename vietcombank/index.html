@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thi thử Vietcombank BA - Basic & Expert</title>
+  <style>
+    :root {
+      --vcb-green: #007a3d;
+      --vcb-dark: #005f30;
+      --bg: #f3f6f8;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #d9e2e7;
+      --danger: #c1121f;
+      --success: #057a38;
+      --warning: #b45309;
+      --card: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--vcb-green), #00a859);
+      color: white;
+      padding: 24px 16px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0 0 6px;
+      font-size: 28px;
+    }
+
+    header p { margin: 4px 0; }
+
+    .container {
+      max-width: 1120px;
+      margin: 20px auto;
+      padding: 0 14px 40px;
+    }
+
+    .panel, .question {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .panel {
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .exam-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .exam-card {
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      background: white;
+      transition: 0.15s;
+    }
+
+    .exam-card:hover {
+      border-color: var(--vcb-green);
+      transform: translateY(-1px);
+    }
+
+    .exam-card.active {
+      border-color: var(--vcb-green);
+      background: #eef8f1;
+    }
+
+    .exam-card h3 { margin: 0 0 8px; color: var(--vcb-dark); }
+    .exam-card p { margin: 4px 0; color: var(--muted); }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    button {
+      border: none;
+      background: var(--vcb-green);
+      color: white;
+      padding: 11px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    button:hover { background: var(--vcb-dark); }
+    button.secondary { background: #374151; }
+    button.secondary:hover { background: #111827; }
+    button.danger { background: var(--danger); }
+    button:disabled { background: #9ca3af; cursor: not-allowed; }
+
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      background: rgba(255,255,255,0.96);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    .timer {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--danger);
+    }
+
+    .progress {
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .result-box {
+      display: none;
+      padding: 18px;
+      margin-bottom: 16px;
+      background: #eef8f1;
+      border: 1px solid #8ac99f;
+      border-radius: 12px;
+      font-size: 18px;
+    }
+
+    .question {
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    .question h3 {
+      margin: 0 0 10px;
+      color: var(--vcb-dark);
+      font-size: 18px;
+    }
+
+    .case {
+      background: #f8fafc;
+      border-left: 5px solid var(--vcb-green);
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      white-space: pre-wrap;
+    }
+
+    .option {
+      display: block;
+      padding: 8px 10px;
+      margin: 7px 0;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #fff;
+    }
+
+    .option:hover { background: #f9fafb; }
+    .option input { margin-right: 8px; }
+
+    .answer {
+      display: none;
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: #f9fafb;
+      border: 1px dashed #cbd5e1;
+    }
+
+    .correct { color: var(--success); font-weight: 800; }
+    .wrong { color: var(--danger); font-weight: 800; }
+    .explain { margin-top: 6px; color: #374151; }
+
+    code, pre {
+      font-family: Consolas, Monaco, monospace;
+    }
+
+    pre {
+      background: #111827;
+      color: #e5e7eb;
+      padding: 12px;
+      overflow-x: auto;
+      border-radius: 8px;
+      margin: 8px 0;
+      font-size: 13px;
+      white-space: pre-wrap;
+    }
+
+    .hidden { display: none; }
+
+    @media (max-width: 720px) {
+      .exam-selector { grid-template-columns: 1fr; }
+      .top-bar { align-items: flex-start; flex-direction: column; }
+      header h1 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Thi thử Vietcombank Hội sở</h1>
+  <p>Vị trí: Phân tích nghiệp vụ - Business Analyst</p>
+  <p>HTML + CSS + JavaScript Vanilla</p>
+</header>
+
+<div class="container">
+  <section id="startPanel" class="panel">
+    <h2>Chọn đề thi</h2>
+    <div class="exam-selector">
+      <div id="basicCard" class="exam-card active" onclick="selectExam('basic')">
+        <h3>Đề Cơ bản</h3>
+        <p>50 câu / 45 phút</p>
+        <p>BA nền tảng, ngân hàng số, SQL cơ bản, Agile/API.</p>
+      </div>
+      <div id="expertCard" class="exam-card" onclick="selectExam('expert')">
+        <h3>Đề Expert Level</h3>
+        <p>50 câu / 60 phút</p>
+        <p>Case study dài, log API, BPMN, SQL thực chiến, kiến trúc ngân hàng.</p>
+      </div>
+    </div>
+    <div class="actions">
+      <button onclick="startExam()">Bắt đầu làm bài</button>
+      <button class="secondary" onclick="previewExam()">Xem trước danh sách câu hỏi</button>
+    </div>
+  </section>
+
+  <div id="topBar" class="top-bar">
+    <div>
+      <div><strong id="currentExamTitle">Đề Cơ bản</strong></div>
+      <div class="progress" id="progressText">Đã chọn: 0/50</div>
+    </div>
+    <div>Thời gian còn lại: <span class="timer" id="timer">45:00</span></div>
+    <button class="danger" onclick="submitExam(false)">Nộp bài sớm</button>
+  </div>
+
+  <div id="result" class="result-box"></div>
+  <form id="quizForm"></form>
+</div>
+
+<script>
+const basicQuestions = [
+  ["Một yêu cầu được mô tả: 'Khách hàng muốn giao dịch nhanh hơn'. Yêu cầu này vi phạm nguyên tắc nào?", ["Feasible", "Traceable", "Testable", "Consistent"], "C", "Yêu cầu chưa có tiêu chí đo lường nên không kiểm thử được."],
+  ["Stakeholder yêu cầu: 'Hệ thống phải xử lý giao dịch trong vòng 2 giây'. Đây là loại yêu cầu nào?", ["Functional Requirement", "Business Rule", "Non-functional Requirement", "User Story"], "C", "Đây là yêu cầu hiệu năng, thuộc nhóm phi chức năng."],
+  ["Trong RTM, mục đích quan trọng nhất là gì?", ["Quản lý source code", "Theo dõi yêu cầu từ đầu đến cuối vòng đời", "Quản lý nhân sự", "Quản lý sprint"], "B", "RTM liên kết requirement với design, build, test và release."],
+  ["Sự khác nhau giữa Exclusive Gateway và Parallel Gateway trong BPMN là gì?", ["Không khác", "Một cái dùng cho điều kiện, một cái cho xử lý song song", "Một cái dùng cho Actor", "Một cái dùng cho Event"], "B", "Exclusive chọn một nhánh theo điều kiện; Parallel chạy các nhánh song song."],
+  ["Với yêu cầu 'Cho phép khách hàng chuyển tiền quốc tế', BA cần làm gì đầu tiên?", ["Viết User Story", "Thiết kế DB", "Làm rõ phạm vi nghiệp vụ", "Viết Test Case"], "C", "Cần xác định hành lang pháp lý, loại tiền, hạn mức, kênh, đối tượng, phí, kiểm soát AML."],
+  ["As-Is Process chủ yếu dùng để làm gì?", ["Thiết kế giao diện", "Mô tả hiện trạng", "Viết SQL", "Quản lý sprint"], "B", "As-Is mô tả quy trình hiện tại trước khi đề xuất To-Be."],
+  ["Kỹ thuật nào hữu ích nhất để xác định nguyên nhân gốc rễ của vấn đề?", ["MoSCoW", "SWOT", "5 Whys", "User Story Mapping"], "C", "5 Whys giúp truy nguyên vấn đề đến root cause."],
+  ["Acceptance Criteria nào tốt nhất cho user story: 'As a customer, I want to reset my password via OTP'?", ["OTP phải được gửi", "OTP được gửi qua SMS", "OTP được gửi trong vòng 30 giây và hết hạn sau 5 phút", "OTP được gửi thành công"], "C", "Tiêu chí có thể đo và kiểm thử rõ ràng."],
+  ["Khi hai stakeholder đưa ra yêu cầu mâu thuẫn nhau, BA nên làm gì?", ["Chọn yêu cầu của cấp cao hơn", "Chọn yêu cầu dễ triển khai hơn", "Phân tích tác động và tổ chức workshop", "Chuyển cho PM"], "C", "BA cần làm rõ trade-off và hỗ trợ ra quyết định có căn cứ."],
+  ["Mô hình nào phù hợp nhất để mô tả luồng dữ liệu giữa các hệ thống?", ["ERD", "Use Case", "Sequence Diagram", "DFD"], "D", "DFD tập trung vào luồng dữ liệu, kho dữ liệu, tác nhân và xử lý."],
+  ["Scope creep xảy ra khi nào?", ["Phạm vi dự án bị mở rộng không kiểm soát", "Sprint kết thúc sớm", "Developer nghỉ việc", "Test case bị lỗi"], "A", "Scope creep là mở rộng phạm vi thiếu kiểm soát hoặc thiếu phê duyệt."],
+  ["Impact Analysis được dùng để làm gì?", ["Đánh giá tác động của thay đổi yêu cầu", "Đếm số dòng code", "Thiết kế màu giao diện", "Tăng tốc server"], "A", "Dùng để đánh giá tác động lên quy trình, dữ liệu, hệ thống, chi phí, tiến độ, rủi ro."],
+  ["Trong MoSCoW, yêu cầu 'Must Have' nghĩa là gì?", ["Có thì tốt", "Không cần làm", "Bắt buộc phải có", "Để phiên bản sau"], "C", "Must Have là yêu cầu tối thiểu để release có giá trị/sử dụng được."],
+  ["Exception Flow trong BPMN dùng để mô tả gì?", ["Luồng xử lý ngoại lệ", "Luồng chính", "Cấu trúc database", "Quyền người dùng"], "A", "Exception flow thể hiện các tình huống lỗi, timeout, từ chối, hoàn trả."],
+  ["Product Backlog Refinement nhằm mục đích gì?", ["Làm rõ và ưu tiên backlog", "Deploy hệ thống", "Viết source code", "Kiểm thử bảo mật"], "A", "Refinement giúp backlog đủ rõ, ước lượng được và sẵn sàng vào sprint."],
+  ["Trong quy trình eKYC, bước nào có rủi ro gian lận cao nhất?", ["Nhập số điện thoại", "OCR giấy tờ", "Face Matching", "Tạo tài khoản"], "C", "Face matching/liveness chịu rủi ro giả mạo khuôn mặt, deepfake, ảnh chụp."],
+  ["Một giao dịch chuyển tiền liên ngân hàng thường đi qua luồng nào?", ["Core Banking → ATM", "Core Banking → NAPAS → Ngân hàng nhận", "CRM → Data Warehouse", "LOS → Core Banking"], "B", "Giao dịch liên ngân hàng nội địa thường đi qua hệ thống chuyển mạch/thanh toán trung gian."],
+  ["Trong Open Banking, cơ chế phổ biến nhất để cấp quyền truy cập API là gì?", ["Basic Authentication", "OAuth2", "FTP", "LDAP"], "B", "OAuth2 thường dùng cho ủy quyền truy cập API theo phạm vi."],
+  ["Khi thiết kế tính năng chuyển tiền, yêu cầu nghiệp vụ quan trọng nào giúp tránh ghi nhận trùng giao dịch?", ["Màu giao diện", "Font chữ", "Idempotency", "Kích thước nút bấm"], "C", "Idempotency giúp cùng một request key không tạo nhiều giao dịch."],
+  ["Nếu khách hàng bấm 'Chuyển tiền' hai lần liên tiếp do mạng chậm, hệ thống cần làm gì?", ["Xử lý cả hai", "Báo lỗi chung", "Kiểm tra giao dịch trùng", "Khởi động lại"], "C", "Cần chống double-submit và kiểm tra trùng request/giao dịch."],
+  ["Trong Core Banking, CIF là gì?", ["Customer Information File", "Customer Identity Form", "Customer Integration Function", "Central Information Framework"], "A", "CIF lưu thông tin định danh/hồ sơ khách hàng trong ngân hàng."],
+  ["Mục tiêu chính của AML System là gì?", ["Marketing", "Fraud Detection", "Chống rửa tiền", "CRM"], "C", "AML phục vụ giám sát, phát hiện, báo cáo giao dịch đáng ngờ liên quan rửa tiền."],
+  ["Basel III bổ sung nổi bật nội dung nào so với Basel II?", ["Marketing", "Liquidity Risk", "CRM", "eKYC"], "B", "Basel III nhấn mạnh thanh khoản và chất lượng vốn."],
+  ["KPI nào phản ánh mức độ gắn bó của khách hàng với ngân hàng số?", ["MAU", "CPU", "TPS", "RAM"], "A", "MAU phản ánh số người dùng hoạt động hàng tháng."],
+  ["CASA tăng thường giúp ngân hàng đạt lợi ích nào?", ["Tăng chi phí vốn", "Giảm chi phí vốn", "Giảm số lượng khách hàng", "Tăng nợ xấu trực tiếp"], "B", "CASA thường là nguồn vốn chi phí thấp."],
+  ["Trong Customer Journey, điểm chạm là gì?", ["Một bảng dữ liệu", "Một lần khách hàng tương tác với ngân hàng", "Một loại tài sản", "Một chỉ số thanh khoản"], "B", "Touchpoint là điểm tương tác giữa khách hàng và ngân hàng."],
+  ["Omnichannel khác Multichannel chủ yếu ở điểm nào?", ["Có nhiều kênh hơn", "Các kênh được tích hợp trải nghiệm liền mạch", "Chỉ dùng mobile app", "Không cần dữ liệu khách hàng"], "B", "Omnichannel nhấn mạnh tính liên thông và nhất quán giữa các kênh."],
+  ["Trong hệ thống ngân hàng số, fraud monitoring nên hoạt động như thế nào?", ["Chỉ kiểm tra cuối ngày", "Theo dõi và cảnh báo gần thời gian thực", "Chỉ dùng báo cáo Excel", "Không cần lưu lịch sử"], "B", "Gian lận cần phát hiện sớm để chặn/giảm thiệt hại."],
+  ["LOS trong ngân hàng thường là hệ thống gì?", ["Loan Origination System", "Local Operation Server", "Ledger Online Service", "Liquidity Optimization System"], "A", "LOS quản lý quy trình khởi tạo khoản vay."],
+  ["KYC là quy trình nhằm mục đích chính nào?", ["Xác minh và hiểu khách hàng", "Tăng quảng cáo", "Thiết kế app", "Tối ưu màu sắc giao diện"], "A", "KYC phục vụ định danh, hiểu khách hàng và quản trị rủi ro."],
+  ["Cho bảng ACCOUNT có 3 dòng. SELECT COUNT(*) FROM ACCOUNT trả về kết quả nào?", ["2", "3", "4", "5"], "B", "COUNT(*) đếm số dòng trong bảng."],
+  ["Với bảng ACCOUNT có CustomerID 1 xuất hiện 2 lần, CustomerID 2 xuất hiện 1 lần. Khách hàng nào có nhiều tài khoản nhất?", ["1", "2", "3", "Không xác định"], "A", "CustomerID=1 có 2 tài khoản."],
+  ["LEFT JOIN khác INNER JOIN ở điểm nào?", ["Nó luôn nhanh hơn", "Trả thêm dữ liệu bên trái không khớp", "Không cần khóa", "Không cần index"], "B", "LEFT JOIN giữ tất cả dòng bảng trái, kể cả khi không có match."],
+  ["SQL nào thường dùng để tìm khách hàng chưa có tài khoản?", ["INNER JOIN", "LEFT JOIN ... WHERE AccountID IS NULL", "RIGHT JOIN", "GROUP BY"], "B", "Anti-join phổ biến: LEFT JOIN rồi lọc bản ghi không match."],
+  ["Dashboard hiển thị Active Users giảm nhưng số giao dịch tăng. Nhận định hợp lý nhất là gì?", ["Dữ liệu chắc chắn sai", "Người dùng ít hơn nhưng giao dịch nhiều hơn", "Hệ thống chắc chắn lỗi", "Không thể phân tích"], "B", "Có thể nhóm người dùng còn lại giao dịch thường xuyên hơn."],
+  ["Window Function trong SQL thường dùng để làm gì?", ["Xóa dữ liệu", "Tính toán trên một tập dòng liên quan mà không gộp mất chi tiết", "Tạo giao diện", "Mã hóa mật khẩu"], "B", "Window function giữ chi tiết từng dòng trong khi tính rank, running total, moving average."],
+  ["Index trong database giúp ích chủ yếu cho việc gì?", ["Tăng tốc truy vấn", "Tự động sửa dữ liệu sai", "Tăng kích thước bảng", "Thay thế khóa chính"], "A", "Index tăng tốc tìm kiếm/lọc/join nhưng có chi phí ghi."],
+  ["Data Warehouse thường dùng cho mục đích nào?", ["Xử lý giao dịch realtime", "Lưu trữ và phân tích dữ liệu tổng hợp", "Gửi OTP", "Quản lý session người dùng"], "B", "DWH phục vụ báo cáo, BI, phân tích."],
+  ["ETL là viết tắt của gì?", ["Extract - Transform - Load", "Export - Transfer - Link", "Evaluate - Test - Launch", "Entry - Type - List"], "A", "ETL là quy trình trích xuất, biến đổi, nạp dữ liệu."],
+  ["KPI nào phù hợp để đánh giá hiệu quả phễu mở tài khoản online?", ["Conversion Rate", "CPU Usage", "RAM Usage", "IP Address"], "A", "Conversion Rate đo tỷ lệ hoàn tất qua các bước funnel."],
+  ["REST API trả về { status: 'SUCCESS', data: null }. Ý nghĩa phù hợp nhất là gì?", ["Thành công nhưng không có dữ liệu", "Lỗi hệ thống", "Timeout", "Không xác định"], "A", "Status success cho biết request xử lý thành công; data null có thể là không có payload."],
+  ["HTTP Status 429 nghĩa là gì?", ["Unauthorized", "Too Many Requests", "Not Found", "Timeout"], "B", "429 phản ánh bị giới hạn tần suất request."],
+  ["Trong microservices, API Gateway dùng để làm gì?", ["Lưu dữ liệu", "Định tuyến và kiểm soát truy cập", "Tạo database", "Chạy batch job"], "B", "API Gateway làm routing, auth, throttling, logging, transformation tùy kiến trúc."],
+  ["Trong Agile, Velocity dùng để đo gì?", ["Hiệu năng server", "Tốc độ hoàn thành công việc của team", "TPS", "Số bug"], "B", "Velocity thường tính bằng story points hoàn thành mỗi sprint."],
+  ["Sprint Goal bị thay đổi giữa Sprint. Điều nào đúng nhất?", ["Luôn cấm tuyệt đối", "Có thể điều chỉnh khi PO và Team thống nhất", "Scrum Master tự quyết định", "Dev tự quyết định"], "B", "Scrum cho phép thích nghi nhưng cần PO và Developers thống nhất về mục tiêu/scope."],
+  ["Sequence Diagram phù hợp nhất để mô tả gì?", ["Mô hình hóa dữ liệu", "Tương tác giữa các thành phần theo thời gian", "Thiết kế UI", "Mô tả tổ chức"], "B", "Sequence diagram thể hiện message theo trục thời gian."],
+  ["Nếu một giao dịch cần gọi Core Banking, AML, Notification theo thứ tự, loại diagram phù hợp nhất là gì?", ["ERD", "BPMN", "Sequence Diagram", "Wireframe"], "C", "Cần mô tả thứ tự gọi hệ thống, request/response và exception."],
+  ["Trong kiến trúc Event-driven, Kafka thường được dùng để làm gì?", ["Authentication", "Message Streaming", "Database", "Cache"], "B", "Kafka dùng cho streaming/event log/pub-sub."],
+  ["Khi hệ thống Mobile Banking bị chậm đột ngột, BA nên làm gì đầu tiên?", ["Yêu cầu Dev sửa ngay", "Thu thập dữ liệu và xác định phạm vi ảnh hưởng", "Rollback ngay", "Thông báo khách hàng ngay"], "B", "BA cần làm rõ triệu chứng, phạm vi, kênh, nhóm khách, thời điểm, dữ liệu đo."],
+  ["Một BA tại Vietcombank Hội sở được giao dự án 'Mở tài khoản online'. Deliverable quan trọng nhất là gì?", ["Source Code", "Test Script", "Bộ yêu cầu nghiệp vụ đầy đủ và có thể kiểm thử", "Kế hoạch truyền thông"], "C", "BA chịu trách nhiệm làm rõ yêu cầu đủ để build/test/accept."]
+].map((x, i) => ({ id: i+1, q: x[0], options: x[1], answer: x[2], explain: x[3] }));
+
+const expertQuestions = [
+  {
+    q: "Case eKYC: Trong luồng mở tài khoản online, khách hàng hoàn thành OCR giấy tờ, face matching thành công, nhưng khi submit tạo CIF thì Core Banking trả lỗi CUSTOMER_DUPLICATED. Quyết định nghiệp vụ phù hợp nhất là gì?",
+    caseText: "Bối cảnh:\n- OCR: SUCCESS, confidence 0.94\n- Face matching: PASS, score 0.87\n- Core response: CUSTOMER_DUPLICATED by national_id\n- Khách hàng chưa có tài khoản thanh toán active nhưng đã có CIF từ sản phẩm thẻ cũ.\nYêu cầu: giảm drop-off nhưng vẫn kiểm soát rủi ro.",
+    options: ["Tạo CIF mới để không gián đoạn trải nghiệm", "Dừng quy trình và yêu cầu khách ra quầy", "Map hồ sơ eKYC vào CIF hiện hữu, tiếp tục bước mở tài khoản nếu thông tin định danh khớp rule", "Bỏ qua lỗi Core và retry đến khi thành công"],
+    answer: "C",
+    explain: "Không nên tạo CIF trùng. BA cần đề xuất luồng match/merge hoặc reuse CIF hiện hữu theo rule định danh và trạng thái khách hàng."
+  },
+  {
+    q: "Đọc log API: Nguyên nhân hợp lý nhất khiến giao dịch không được ghi nhận thành công là gì?",
+    caseText: "POST /transfer\nx-idempotency-key: TRX-9981\nHTTP 504 Gateway Timeout\n\nSau 3 giây, client retry cùng payload nhưng tạo key mới:\nx-idempotency-key: TRX-9982\nCore Banking log:\nTRX-9981: DEBIT_SUCCESS, CREDIT_PENDING\nTRX-9982: DEBIT_REJECTED_DUPLICATE_AMOUNT_WINDOW",
+    options: ["Hệ thống xử lý đúng hoàn toàn, không cần yêu cầu mới", "Client retry sai idempotency key dẫn đến khó đối soát trạng thái giao dịch ban đầu", "Core Banking không hỗ trợ timeout", "Gateway phải tự tạo lại giao dịch thứ hai"],
+    answer: "B",
+    explain: "Retry phải dùng cùng idempotency key/correlation ID để truy vấn trạng thái giao dịch ban đầu thay vì tạo request logic mới."
+  },
+  {
+    q: "Trong BPMN cho quy trình phê duyệt khoản vay, khi bước thẩm định tài sản và kiểm tra CIC có thể thực hiện đồng thời, gateway nào phù hợp để tách luồng?",
+    caseText: "Quy trình To-Be:\n1. Nhận hồ sơ vay\n2. Thực hiện song song: kiểm tra CIC và thẩm định tài sản\n3. Chỉ khi cả hai hoàn thành mới chuyển sang bước chấm điểm tín dụng",
+    options: ["Exclusive Gateway", "Parallel Gateway", "Event-based Gateway", "Inclusive Gateway"],
+    answer: "B",
+    explain: "Parallel Gateway dùng để fork/join các nhánh bắt buộc chạy song song."
+  },
+  {
+    q: "Trong cùng quy trình, nếu khoản vay tín chấp thì bỏ qua thẩm định tài sản, còn khoản vay thế chấp thì bắt buộc thẩm định tài sản. Gateway phù hợp nhất là gì?",
+    caseText: "Rule:\n- LoanType = Unsecured: chỉ kiểm tra CIC\n- LoanType = Secured: kiểm tra CIC + thẩm định tài sản",
+    options: ["Exclusive Gateway", "Parallel Gateway", "Timer Event", "End Event"],
+    answer: "A",
+    explain: "Exclusive Gateway chọn một nhánh theo điều kiện nghiệp vụ."
+  },
+  {
+    q: "SQL thực chiến: Câu SQL nào tìm khách hàng có từ 3 giao dịch chuyển tiền thất bại trở lên trong 10 phút?",
+    caseText: "Bảng TRANSFER_LOG(customer_id, trans_time, status). Giả sử dùng PostgreSQL.",
+    options: [
+      "SELECT customer_id FROM transfer_log WHERE status='FAILED' GROUP BY customer_id HAVING COUNT(*) >= 3",
+      "Dùng window function COUNT(*) OVER(PARTITION BY customer_id ORDER BY trans_time RANGE BETWEEN INTERVAL '10 minutes' PRECEDING AND CURRENT ROW) và lọc failed_count >= 3",
+      "SELECT * FROM transfer_log WHERE status='FAILED' LIMIT 3",
+      "GROUP BY status HAVING COUNT(customer_id) >= 3"
+    ],
+    answer: "B",
+    explain: "Điều kiện 'trong 10 phút' cần cửa sổ thời gian trượt, không chỉ GROUP BY tổng toàn bộ."
+  },
+  {
+    q: "Kiến trúc ngân hàng: Với giao dịch chuyển tiền, pattern nào phù hợp nhất để đảm bảo trạng thái eventual consistency giữa Core, Notification và Loyalty?",
+    caseText: "Core phải ghi nhận giao dịch trước. Notification và Loyalty là hệ thống phụ trợ, có thể xử lý bất đồng bộ. Không muốn Core phụ thuộc trực tiếp vào downtime của Notification.",
+    options: ["Synchronous chained call bắt buộc tất cả thành công", "Event-driven publish TransferCompleted event sau khi Core commit", "Ghi trực tiếp vào database của Notification", "Gọi Notification trước rồi mới debit Core"],
+    answer: "B",
+    explain: "Event-driven giúp tách phụ thuộc, tăng resilience và hỗ trợ eventual consistency."
+  },
+  {
+    q: "API Design: Endpoint nào phù hợp nhất để tra cứu trạng thái giao dịch theo correlationId/idempotencyKey sau timeout?",
+    caseText: "Client đã gửi request chuyển tiền nhưng nhận HTTP 504. Không biết giao dịch đã debit hay chưa.",
+    options: ["POST /transfer/retry-with-new-id", "GET /transfers/status?correlationId=...", "DELETE /transfer", "POST /login"],
+    answer: "B",
+    explain: "Sau timeout cần endpoint truy vấn trạng thái theo correlation/canonical transaction reference."
+  },
+  {
+    q: "BA nhận yêu cầu 'dashboard giao dịch realtime'. Câu hỏi làm rõ quan trọng nhất là gì?",
+    caseText: "Sponsor nói: 'Tôi muốn realtime để giám sát giao dịch toàn hệ thống'.",
+    options: ["Dùng màu gì cho dashboard?", "Realtime nghĩa là độ trễ chấp nhận được bao nhiêu giây/phút và mục tiêu ra quyết định là gì?", "Có xuất Excel không?", "Tên dashboard là gì?"],
+    answer: "B",
+    explain: "Realtime là khái niệm mơ hồ; cần SLA latency và use case ra quyết định."
+  },
+  {
+    q: "Log API dưới đây cho thấy vấn đề nào cần BA ghi nhận thành yêu cầu phi chức năng?",
+    caseText: "10:00:01 POST /ekyc/verify 200 1800ms\n10:00:02 POST /ekyc/verify 200 2200ms\n10:00:03 POST /ekyc/verify 429 30ms\n10:00:04 POST /ekyc/verify 429 25ms\nMessage: rate limit exceeded",
+    options: ["Yêu cầu màu giao diện", "Yêu cầu về rate limit, quota, thông báo lỗi và cơ chế retry/backoff", "Yêu cầu tạo thêm bảng customer", "Yêu cầu đổi tên API"],
+    answer: "B",
+    explain: "429 liên quan quota/rate limit; BA cần đặc tả hành vi client, thông báo và retry policy."
+  },
+  {
+    q: "Trong dự án tích hợp Open API với đối tác fintech, artefact nào quan trọng nhất để giảm sai lệch khi kiểm thử tích hợp?",
+    caseText: "Hai bên thường hiểu khác nhau về mã lỗi, timeout, retry, webhook và mapping trường dữ liệu.",
+    options: ["Logo guideline", "API contract/OpenAPI spec kèm error code, schema, sample request/response và sequence", "Biên bản họp tổng quát", "Danh sách thành viên dự án"],
+    answer: "B",
+    explain: "API contract là nguồn thống nhất để dev/test/partner kiểm thử tích hợp."
+  },
+  {
+    q: "SQL: Với bảng ACCOUNT(customer_id, account_id, status, opened_date), yêu cầu lấy tài khoản active mới nhất của mỗi khách hàng. Cách đúng nhất là gì?",
+    caseText: "Một khách hàng có thể có nhiều tài khoản ACTIVE/INACTIVE.",
+    options: [
+      "SELECT * FROM account WHERE status='ACTIVE' GROUP BY customer_id",
+      "Dùng ROW_NUMBER() OVER(PARTITION BY customer_id ORDER BY opened_date DESC) và lọc rn=1",
+      "SELECT DISTINCT customer_id, account_id FROM account",
+      "SELECT MAX(opened_date), account_id FROM account"
+    ],
+    answer: "B",
+    explain: "Cần chọn cả dòng tương ứng với ngày mới nhất; window function là cách rõ ràng."
+  },
+  {
+    q: "Trong quy trình xử lý giao dịch nghi ngờ AML, nguyên tắc thiết kế nào phù hợp nhất?",
+    caseText: "Nếu giao dịch bị rule AML đánh dấu high-risk, hệ thống không được thông báo chi tiết rule cho khách hàng nhưng phải đảm bảo truy vết cho bộ phận tuân thủ.",
+    options: ["Hiển thị toàn bộ rule AML cho khách để minh bạch", "Trả thông báo chung cho khách, lưu audit trail chi tiết cho compliance", "Bỏ qua AML để tăng trải nghiệm", "Chỉ ghi log ở frontend"],
+    answer: "B",
+    explain: "Cần cân bằng trải nghiệm, bảo mật rule và yêu cầu tuân thủ/audit."
+  },
+  {
+    q: "Khi thiết kế requirement cho OTP, tập yêu cầu nào đầy đủ nhất?",
+    caseText: "Tính năng xác thực chuyển tiền bằng OTP.",
+    options: [
+      "OTP gồm 6 số",
+      "OTP 6 số, TTL, số lần nhập sai tối đa, resend interval, kênh gửi, masking, lock rule, audit log",
+      "OTP gửi qua SMS",
+      "OTP phải nhanh"
+    ],
+    answer: "B",
+    explain: "OTP cần nhiều rule nghiệp vụ và bảo mật, không chỉ độ dài mã."
+  },
+  {
+    q: "Đọc lỗi tích hợp: HTTP 200 nhưng body có businessCode='LIMIT_EXCEEDED'. BA nên đặc tả điều gì?",
+    caseText: "Response:\nHTTP 200\n{\"status\":\"FAILED\",\"businessCode\":\"LIMIT_EXCEEDED\",\"message\":\"Daily transfer limit exceeded\"}",
+    options: ["Chỉ dựa vào HTTP status", "Phân biệt transport status và business status; mapping businessCode sang thông báo/luồng xử lý", "Coi mọi HTTP 200 là thành công", "Yêu cầu server luôn trả HTTP 500"],
+    answer: "B",
+    explain: "Nhiều hệ thống legacy dùng HTTP 200 cho lỗi nghiệp vụ; contract phải nêu rõ mapping."
+  },
+  {
+    q: "BA cần mô tả 'khách hàng nhập số tiền, hệ thống kiểm tra hạn mức, nếu vượt hạn mức thì từ chối, nếu hợp lệ thì gọi Core'. Artefact nào phù hợp nhất để mô tả nghiệp vụ end-to-end?",
+    caseText: "Mục tiêu là giúp business, dev, tester cùng hiểu luồng chính và luồng ngoại lệ.",
+    options: ["BPMN", "ERD", "Data Dictionary בלבד", "Sitemap"],
+    answer: "A",
+    explain: "BPMN tốt cho quy trình nghiệp vụ có điều kiện và exception."
+  },
+  {
+    q: "Trong microservices, anti-pattern nào BA/SA cần tránh khi đặc tả tích hợp?",
+    caseText: "Service A cần hiển thị lịch sử giao dịch của khách hàng. Đội A đề xuất đọc trực tiếp bảng giao dịch của Service B để nhanh hơn.",
+    options: ["Database-per-service", "API contract rõ ràng", "Shared database giữa service làm phá vỡ boundary", "Event publishing"],
+    answer: "C",
+    explain: "Đọc trực tiếp database của service khác làm coupling cao và khó thay đổi schema."
+  },
+  {
+    q: "Trong phân tích yêu cầu dữ liệu cho báo cáo CASA, định nghĩa nào cần chốt đầu tiên?",
+    caseText: "Các phòng ban tranh luận CASA gồm những loại tài khoản nào và lấy số dư thời điểm nào.",
+    options: ["Font báo cáo", "Business definition và data lineage của CASA", "Tên file Excel", "Màu biểu đồ"],
+    answer: "B",
+    explain: "Chỉ số quản trị cần định nghĩa nghiệp vụ và nguồn dữ liệu thống nhất trước."
+  },
+  {
+    q: "SQL: Vì sao COUNT(*) sau JOIN có thể làm phóng đại số lượng khách hàng?",
+    caseText: "CUSTOMER 1-n ACCOUNT, ACCOUNT 1-n TRANSACTION. Báo cáo join cả 3 bảng rồi COUNT(customer_id).",
+    options: ["Vì JOIN luôn sai", "Vì quan hệ 1-n làm nhân bản dòng customer theo account/transaction", "Vì COUNT không chạy với JOIN", "Vì customer_id là text"],
+    answer: "B",
+    explain: "Phải dùng COUNT(DISTINCT customer_id) hoặc aggregate theo grain phù hợp."
+  },
+  {
+    q: "Trong thiết kế Data Warehouse, khái niệm 'grain' của fact table là gì?",
+    caseText: "Fact giao dịch có thể lưu ở mức mỗi giao dịch, mỗi ngày mỗi khách hàng, hoặc mỗi ngày mỗi tài khoản.",
+    options: ["Màu bảng", "Mức độ chi tiết của một dòng dữ liệu trong fact table", "Tên schema", "Loại index"],
+    answer: "B",
+    explain: "Grain quyết định ý nghĩa mỗi dòng và cách aggregate."
+  },
+  {
+    q: "Case Mobile Banking: Tỷ lệ drop-off tăng mạnh ở bước chụp giấy tờ sau khi release. BA nên ưu tiên dữ liệu nào?",
+    caseText: "Release mới thay đổi SDK camera. Complaints tăng nhưng chưa rõ nguyên nhân.",
+    options: ["Số lượng nhân viên dự án", "Funnel theo thiết bị/OS/app version/error code/thời điểm", "Logo trên màn hình", "Danh sách toàn bộ user"],
+    answer: "B",
+    explain: "Cần segment funnel theo phiên bản và môi trường để khoanh vùng lỗi."
+  },
+  {
+    q: "Khi yêu cầu 'hệ thống phải bảo mật' được đưa vào BRD, BA nên xử lý thế nào?",
+    caseText: "Business Owner chỉ viết một dòng: 'App cần bảo mật cao'.",
+    options: ["Giữ nguyên vì dễ hiểu", "Chuyển thành NFR cụ thể: MFA, encryption, session timeout, audit, masking, phân quyền, tiêu chuẩn kiểm thử", "Xóa yêu cầu", "Chuyển hết cho tester"],
+    answer: "B",
+    explain: "NFR phải cụ thể, đo được, kiểm thử được."
+  },
+  {
+    q: "Trong UAT, người dùng báo 'tính phí sai' nhưng không nêu case. BA cần yêu cầu thông tin tối thiểu nào?",
+    caseText: "Tính phí chuyển tiền phụ thuộc kênh, loại khách hàng, hạn mức, ngân hàng nhận, thời điểm và biểu phí.",
+    options: ["Ảnh đại diện khách hàng", "Input giao dịch, loại khách, biểu phí kỳ vọng, kết quả thực tế, thời điểm, mã giao dịch", "Tên tester", "Màu màn hình"],
+    answer: "B",
+    explain: "Bug nghiệp vụ cần dữ liệu tái hiện và expected result theo rule."
+  },
+  {
+    q: "API webhook từ đối tác gửi trùng cùng eventId do retry. Hệ thống nhận webhook cần yêu cầu nào?",
+    caseText: "Partner retry khi không nhận HTTP 2xx. Có thể gửi cùng eventId nhiều lần.",
+    options: ["Xử lý trùng idempotent theo eventId", "Tạo bản ghi mới mỗi lần nhận", "Chặn toàn bộ webhook retry", "Không lưu log"],
+    answer: "A",
+    explain: "Webhook consumer phải idempotent vì retry là hành vi bình thường."
+  },
+  {
+    q: "Trong quy trình giải ngân, nếu Core debit tài khoản nguồn thành công nhưng hệ thống LOS timeout chưa cập nhật trạng thái, thiết kế nào giảm rủi ro lệch trạng thái?",
+    caseText: "Yêu cầu: không được giải ngân hai lần, phải đối soát tự động.",
+    options: ["Cho phép người dùng bấm lại giải ngân với request mới", "Dùng transaction reference duy nhất, trạng thái trung gian, job reconciliation và truy vấn trạng thái Core", "Xóa hồ sơ vay", "Cập nhật thủ công không cần log"],
+    answer: "B",
+    explain: "Cần reference duy nhất, state machine và reconciliation."
+  },
+  {
+    q: "Trong state machine của giao dịch chuyển tiền, trạng thái nào phù hợp sau khi debit thành công nhưng credit ngân hàng nhận chưa xác nhận?",
+    caseText: "Giao dịch liên ngân hàng qua switch, response cuối có thể đến muộn.",
+    options: ["SUCCESS", "FAILED", "PENDING/PROCESSING", "CANCELLED_BY_USER"],
+    answer: "C",
+    explain: "Chưa có kết quả cuối nên phải dùng trạng thái trung gian."
+  },
+  {
+    q: "BA cần phân tích tích hợp với Core Banking legacy chỉ hỗ trợ batch cuối ngày. Điều chỉnh kỳ vọng nào quan trọng nhất?",
+    caseText: "Business muốn báo cáo số dư realtime cho sản phẩm mới nhưng Core chỉ xuất file batch 23:00.",
+    options: ["Cam kết realtime bất chấp Core", "Làm rõ freshness/SLA dữ liệu và đề xuất nguồn dữ liệu thay thế nếu cần realtime", "Bỏ báo cáo", "Đổi màu dashboard"],
+    answer: "B",
+    explain: "Cần chốt độ tươi dữ liệu và ràng buộc nguồn."
+  },
+  {
+    q: "SQL: Query báo cáo chậm do WHERE DATE(created_at)=CURRENT_DATE. Nguyên nhân phổ biến là gì?",
+    caseText: "created_at có index. Bảng giao dịch 200 triệu dòng.",
+    options: ["Dùng hàm trên cột có thể làm giảm khả năng dùng index", "CURRENT_DATE không hợp lệ", "WHERE luôn chậm", "Index không dùng cho timestamp"],
+    answer: "A",
+    explain: "Nên dùng range: created_at >= today and created_at < tomorrow."
+  },
+  {
+    q: "Trong API error design, mã lỗi nào nên ổn định cho client xử lý logic?",
+    caseText: "Message hiển thị có thể thay đổi theo ngôn ngữ, nhưng mobile app cần biết lỗi vượt hạn mức để dẫn khách nâng hạn mức.",
+    options: ["message text", "business error code cố định", "thứ tự field trong JSON", "HTTP reason phrase"],
+    answer: "B",
+    explain: "Client nên dựa vào error code ổn định, không dựa vào text."
+  },
+  {
+    q: "Trong BPMN, boundary timer event gắn với bước 'Chờ phê duyệt' thường dùng để mô tả gì?",
+    caseText: "Nếu sau 24 giờ hồ sơ chưa được phê duyệt thì tự động escalation cho trưởng nhóm.",
+    options: ["Luồng timeout/escalation", "Luồng dữ liệu", "Database key", "Vai trò actor"],
+    answer: "A",
+    explain: "Boundary timer event mô tả sự kiện thời gian phát sinh khi activity chưa hoàn tất."
+  },
+  {
+    q: "Với requirement 'tự động phân loại giao dịch nghi ngờ gian lận bằng AI', BA cần bổ sung yêu cầu nào ngoài functional flow?",
+    caseText: "Mô hình AI trả về risk_score 0-1. Business sẽ quyết định chặn, cảnh báo hay cho qua.",
+    options: ["Màu nút AI", "Threshold, explainability, monitoring drift, false positive handling, human review, audit", "Chỉ yêu cầu model accuracy 100%", "Không cần kiểm thử"],
+    answer: "B",
+    explain: "AI trong ngân hàng cần kiểm soát mô hình, giải thích, giám sát, ngoại lệ và audit."
+  },
+  {
+    q: "Yêu cầu nào thể hiện đúng nhất nguyên tắc least privilege?",
+    caseText: "Màn hình quản trị hạn mức giao dịch có các vai trò Maker, Checker, Admin.",
+    options: ["Tất cả user đều có quyền sửa hạn mức", "Chỉ cấp quyền tối thiểu theo vai trò; thao tác nhạy cảm cần maker-checker", "Ẩn menu là đủ bảo mật", "Dùng chung tài khoản admin"],
+    answer: "B",
+    explain: "Least privilege và maker-checker là kiểm soát quan trọng trong ngân hàng."
+  },
+  {
+    q: "Khi phân tích API pagination cho lịch sử giao dịch, yêu cầu nào quan trọng nhất?",
+    caseText: "Khách hàng có thể có hàng chục nghìn giao dịch. Mobile cần tải nhanh và không thiếu/trùng dữ liệu khi có giao dịch mới phát sinh.",
+    options: ["Chỉ trả tất cả dữ liệu một lần", "Đặc tả limit, cursor/page token, sort order ổn định, total/hasMore và behavior khi dữ liệu thay đổi", "Không cần phân trang", "Dùng ảnh chụp màn hình"],
+    answer: "B",
+    explain: "Pagination cần contract rõ để tránh mất/trùng dữ liệu và đảm bảo hiệu năng."
+  },
+  {
+    q: "Trong dự án migration Core Banking, reconciliation dùng để làm gì?",
+    caseText: "Dữ liệu tài khoản, số dư, lãi dự thu được chuyển từ hệ thống cũ sang hệ thống mới.",
+    options: ["Trang trí dashboard", "Đối chiếu dữ liệu trước/sau migration theo rule để phát hiện sai lệch", "Tạo user story", "Gửi email marketing"],
+    answer: "B",
+    explain: "Migration bắt buộc đối soát dữ liệu theo tổng, chi tiết và rule nghiệp vụ."
+  },
+  {
+    q: "BA thấy requirement 'hỗ trợ 10.000 TPS' trong dự án mở tài khoản online. Phản ứng tốt nhất là gì?",
+    caseText: "Sản phẩm dự kiến 50.000 hồ sơ/ngày, peak campaign có thể tăng.",
+    options: ["Chấp nhận ngay", "Làm rõ workload model, peak, concurrency, SLA, endpoint scope và căn cứ kinh doanh", "Xóa vì BA không quan tâm kỹ thuật", "Đổi thành 100 TPS tùy ý"],
+    answer: "B",
+    explain: "NFR hiệu năng cần căn cứ workload và phạm vi đo."
+  },
+  {
+    q: "Case audit log: Trường nào KHÔNG nên lưu dạng plain text trong audit log?",
+    caseText: "Audit log cần phục vụ tra soát giao dịch, điều tra gian lận và tuân thủ.",
+    options: ["transaction_id", "timestamp", "full OTP/password/PIN", "actor_id"],
+    answer: "C",
+    explain: "Thông tin xác thực nhạy cảm không được lưu plain text."
+  },
+  {
+    q: "Trong requirement cho export dữ liệu khách hàng, kiểm soát nào quan trọng nhất?",
+    caseText: "Người dùng nội bộ muốn export danh sách khách VIP ra Excel.",
+    options: ["Cho export không giới hạn", "Phân quyền, masking, watermark, approval, audit trail, giới hạn trường dữ liệu", "Chỉ đổi tên file", "Không cần log vì là nội bộ"],
+    answer: "B",
+    explain: "Dữ liệu khách hàng nhạy cảm cần kiểm soát truy cập và truy vết."
+  },
+  {
+    q: "Đọc log: Vấn đề chính là gì?",
+    caseText: "correlationId=abc123\nAPI Gateway: 200 OK in 120ms\nTransfer Service: status=PROCESSING\nCore Adapter: timeout after 3000ms\nNotification: sent 'Transfer successful' to customer",
+    options: ["Thông báo thành công được gửi khi trạng thái giao dịch chưa chắc chắn", "Gateway quá nhanh", "CorrelationId không cần thiết", "Core Adapter không dùng JSON"],
+    answer: "A",
+    explain: "Không được gửi thông báo success khi giao dịch mới PROCESSING do Core timeout."
+  },
+  {
+    q: "Một yêu cầu nghiệp vụ nói 'khách hàng VIP được miễn phí chuyển tiền'. Câu hỏi làm rõ nào quan trọng nhất?",
+    caseText: "Ngân hàng có nhiều phân hạng khách hàng và nhiều loại phí.",
+    options: ["VIP màu gì?", "VIP được xác định tại thời điểm nào, theo hệ thống nào, miễn loại phí nào, có hiệu lực bao lâu, có ngoại lệ không?", "Ai thiết kế icon?", "Có cần animation không?"],
+    answer: "B",
+    explain: "Rule miễn phí cần định nghĩa đối tượng, nguồn, thời điểm, phạm vi và ngoại lệ."
+  },
+  {
+    q: "Trong thiết kế batch job tính lãi cuối ngày, yêu cầu nào là quan trọng nhất?",
+    caseText: "Job chạy sau cut-off, cập nhật lãi dự thu cho hàng triệu tài khoản.",
+    options: ["Tên job đẹp", "Cut-off time, retry, restartability, idempotency, reconciliation, alerting", "Chỉ cần chạy nhanh", "Không cần log"],
+    answer: "B",
+    explain: "Batch banking cần kiểm soát cut-off, chạy lại an toàn và đối soát."
+  },
+  {
+    q: "Trong context ngân hàng, maker-checker pattern dùng để làm gì?",
+    caseText: "Áp dụng cho thay đổi hạn mức, duyệt giao dịch giá trị lớn, cập nhật thông tin nhạy cảm.",
+    options: ["Tăng số màn hình", "Tách người tạo và người phê duyệt để giảm rủi ro thao tác/gian lận", "Tăng tốc truy vấn SQL", "Thay thế OTP"],
+    answer: "B",
+    explain: "Maker-checker là kiểm soát 4 mắt phổ biến."
+  },
+  {
+    q: "Khi xây dựng data dictionary cho API chuyển tiền, trường nào cần đặc tả kỹ nhất?",
+    caseText: "Các hệ thống khác nhau dùng định dạng tiền tệ, mã ngân hàng và số tài khoản khác nhau.",
+    options: ["Tên biến tùy dev", "Kiểu dữ liệu, bắt buộc/không, format, length, precision, enum, validation, masking", "Màu JSON", "Thứ tự câu hỏi khảo sát"],
+    answer: "B",
+    explain: "Data dictionary phải đủ để dev/test/partner validate chính xác."
+  },
+  {
+    q: "Trong phân tích lỗi 'giao dịch bị treo', artefact nào giúp nhất để thống nhất giữa BA, Dev, Ops?",
+    caseText: "Giao dịch có thể ở INITIATED, OTP_VERIFIED, DEBITED, SWITCH_PENDING, COMPLETED, REVERSED.",
+    options: ["State transition diagram kèm rule chuyển trạng thái", "Logo hệ thống", "Meeting agenda", "CV của team"],
+    answer: "A",
+    explain: "State machine giúp rõ trạng thái hợp lệ, event chuyển trạng thái và xử lý treo."
+  },
+  {
+    q: "Yêu cầu nào tốt nhất cho observability trong tích hợp liên hệ thống?",
+    caseText: "Một giao dịch đi qua Mobile App, API Gateway, Transfer Service, Core Adapter, NAPAS Adapter.",
+    options: ["Mỗi hệ thống tự log tùy ý", "Correlation ID xuyên suốt, structured log, metric, trace, alert theo SLA", "Chỉ log lỗi cuối cùng", "Không log để tiết kiệm dung lượng"],
+    answer: "B",
+    explain: "Observability cần correlation end-to-end để tra soát và vận hành."
+  },
+  {
+    q: "Trong Agile, BA nên xử lý thế nào khi user story quá lớn và chứa nhiều exception?",
+    caseText: "Story 'Khách hàng thực hiện chuyển tiền' gồm: trong/ngoài hệ thống, liên ngân hàng, QR, lịch chuyển tiền, hạn mức, phí, OTP, AML, reversal.",
+    options: ["Đưa nguyên story vào sprint", "Split theo journey/rule có giá trị độc lập và acceptance criteria rõ", "Xóa exception", "Chuyển hết cho tester"],
+    answer: "B",
+    explain: "Story cần đủ nhỏ, testable và có value; exception phức tạp nên tách hợp lý."
+  },
+  {
+    q: "Khi có thay đổi biểu phí, impact analysis phải xem xét nhóm nào đầy đủ nhất?",
+    caseText: "Biểu phí ảnh hưởng mobile banking, internet banking, quầy, core, báo cáo doanh thu phí, chăm sóc khách hàng.",
+    options: ["Chỉ màn hình mobile", "Kênh giao dịch, Core fee engine, customer segment, hạch toán, báo cáo, thông báo, test regression", "Chỉ file biểu phí", "Chỉ phòng marketing"],
+    answer: "B",
+    explain: "Biểu phí là rule cross-system, ảnh hưởng nhiều kênh và báo cáo/hạch toán."
+  },
+  {
+    q: "Đọc SQL: Query nào có nguy cơ sai nghiệp vụ khi tính tổng số tiền giao dịch thành công trong ngày?",
+    caseText: "Bảng transaction có status: INIT, PROCESSING, SUCCESS, REVERSED, FAILED. Một giao dịch SUCCESS sau đó có thể bị REVERSED.",
+    options: [
+      "SUM(amount) WHERE status='SUCCESS'",
+      "SUM(amount) WHERE business_date=:d AND final_status='SUCCESS' AND reversed_flag=false",
+      "Tính theo final state đã loại reversal",
+      "Dựa vào bảng settlement đã đối soát"
+    ],
+    answer: "A",
+    explain: "Chỉ lọc SUCCESS có thể chưa loại giao dịch đảo/hoàn."
+  },
+  {
+    q: "Trong thiết kế sản phẩm mở tài khoản online, vì sao cần event 'ApplicationSubmitted' tách khỏi 'AccountOpened'?",
+    caseText: "Có hồ sơ submit thành công nhưng cần review thủ công trước khi mở tài khoản.",
+    options: ["Hai event giống nhau", "Submit hồ sơ và mở tài khoản là hai mốc nghiệp vụ khác nhau, có SLA và trạng thái khác nhau", "Để tăng số log vô nghĩa", "Không cần event nào"],
+    answer: "B",
+    explain: "Tách event giúp quản lý state, SLA và thông báo đúng."
+  },
+  {
+    q: "Với requirement 'khách hàng có thể hủy giao dịch đang xử lý', câu hỏi quan trọng nhất là gì?",
+    caseText: "Giao dịch có nhiều trạng thái và có thể đã debit tài khoản.",
+    options: ["Nút hủy màu gì?", "Được hủy ở trạng thái nào, nếu đã debit thì reversal/compensation ra sao, SLA và thông báo thế nào?", "Có icon không?", "Tên màn hình là gì?"],
+    answer: "B",
+    explain: "Hủy giao dịch liên quan state, tiền, reversal và trách nhiệm pháp lý."
+  },
+  {
+    q: "Trong mô hình phân quyền RBAC, phát biểu nào đúng nhất?",
+    caseText: "Người dùng nội bộ thuộc nhiều phòng ban, vai trò và có thể được ủy quyền tạm thời.",
+    options: ["Quyền gán trực tiếp cho từng user là luôn tốt nhất", "Quyền gắn với role; user được gán role; cần xử lý xung đột, SoD và hiệu lực ủy quyền", "RBAC chỉ dùng cho khách hàng cá nhân", "RBAC không cần audit"],
+    answer: "B",
+    explain: "RBAC cần role, user-role mapping, separation of duties và audit."
+  },
+  {
+    q: "Case performance: Mobile app gọi 5 API tuần tự để load trang chủ. BA/SA nên xem xét yêu cầu nào?",
+    caseText: "Trang chủ cần số dư, banner, thông báo, khoản vay, thẻ. TTFB cao khi mạng yếu.",
+    options: ["Tăng kích thước ảnh", "API aggregation/BFF, parallel loading, cache policy, skeleton UI, SLA từng API", "Bắt user chờ", "Xóa logging"],
+    answer: "B",
+    explain: "Trang mobile cần tối ưu trải nghiệm bằng BFF/aggregation/cache/parallelism."
+  },
+  {
+    q: "Trong UAT sign-off, điều kiện nào tốt nhất?",
+    caseText: "Dự án có nhiều severity bug và một số issue cosmetic.",
+    options: ["Không cần tiêu chí", "Tất cả test case critical/high pass; không còn defect blocker/critical; known issues được chấp thuận; evidence đầy đủ", "Chỉ cần PO nói OK", "Chỉ cần hết thời gian test"],
+    answer: "B",
+    explain: "Sign-off cần tiêu chí rõ và evidence."
+  },
+  {
+    q: "Yêu cầu 'khôi phục giao dịch khi hệ thống lỗi giữa chừng' liên quan nhiều nhất đến khái niệm nào?",
+    caseText: "Giao dịch đi qua nhiều hệ thống, không thể dùng một database transaction duy nhất.",
+    options: ["Saga/compensation transaction", "CSS", "Sitemap", "Logo"],
+    answer: "A",
+    explain: "Saga/compensation phù hợp với distributed transaction trong microservices."
+  },
+  {
+    q: "Trong báo cáo rủi ro tín dụng, việc lấy dữ liệu từ nhiều nguồn nhưng định nghĩa nợ quá hạn khác nhau sẽ gây rủi ro gì?",
+    caseText: "LOS tính DPD theo ngày đến hạn; Core tính theo cuối ngày; DWH cập nhật T+1.",
+    options: ["Rủi ro semantic inconsistency/data quality", "Rủi ro đổi màu giao diện", "Rủi ro thiếu icon", "Không có rủi ro"],
+    answer: "A",
+    explain: "Khác định nghĩa nghiệp vụ dẫn tới báo cáo không nhất quán."
+  },
+  {
+    q: "Trong đặc tả yêu cầu cho consent management của Open Banking, yếu tố nào bắt buộc phải làm rõ?",
+    caseText: "Khách hàng cấp quyền cho fintech xem thông tin tài khoản.",
+    options: ["Scope dữ liệu, thời hạn consent, revoke, audit, purpose, partner, re-authentication", "Màu màn hình", "Tên nhân viên fintech", "Số lượng banner"],
+    answer: "A",
+    explain: "Consent phải rõ phạm vi, thời hạn, thu hồi, truy vết và mục đích."
+  },
+  {
+    q: "Câu nào mô tả tốt nhất vai trò BA trong dự án Expert-level ngân hàng số?",
+    caseText: "Dự án gồm business owner, compliance, risk, IT, vendor, operations, customer support.",
+    options: ["Chỉ ghi biên bản họp", "Kết nối nghiệp vụ - dữ liệu - hệ thống - kiểm soát rủi ro để tạo yêu cầu rõ, kiểm thử được và khả thi", "Chỉ vẽ UI", "Chỉ viết SQL"],
+    answer: "B",
+    explain: "BA cấp cao phải điều phối hiểu biết cross-domain, chuyển hóa thành requirement có thể triển khai và kiểm thử."
+  }
+].map((x, i) => ({ id: i+1, ...x }));
+
+const exams = {
+  basic: { title: "Đề Cơ bản", minutes: 45, questions: basicQuestions },
+  expert: { title: "Đề Expert Level", minutes: 60, questions: expertQuestions }
+};
+
+let selectedExamKey = "basic";
+let currentQuestions = [];
+let totalSeconds = 0;
+let timerId = null;
+let submitted = false;
+let started = false;
+
+const form = document.getElementById("quizForm");
+const timerEl = document.getElementById("timer");
+const resultEl = document.getElementById("result");
+const progressText = document.getElementById("progressText");
+const currentExamTitle = document.getElementById("currentExamTitle");
+
+function selectExam(key) {
+  if (started && !submitted) {
+    alert("Bạn đang làm bài. Hãy nộp bài hoặc tải lại trang nếu muốn đổi đề.");
+    return;
+  }
+  selectedExamKey = key;
+  document.getElementById("basicCard").classList.toggle("active", key === "basic");
+  document.getElementById("expertCard").classList.toggle("active", key === "expert");
+}
+
+function previewExam() {
+  renderExam(false);
+  document.getElementById("topBar").style.display = "none";
+  resultEl.style.display = "block";
+  resultEl.innerHTML = "Đang xem trước đề <strong>" + exams[selectedExamKey].title + "</strong>. Đáp án chưa hiển thị. Bấm <strong>Bắt đầu làm bài</strong> để tính giờ.";
+}
+
+function startExam() {
+  submitted = false;
+  started = true;
+  resultEl.style.display = "none";
+  renderExam(true);
+  document.getElementById("startPanel").classList.add("hidden");
+  document.getElementById("topBar").style.display = "flex";
+
+  totalSeconds = exams[selectedExamKey].minutes * 60;
+  updateTimer();
+  if (timerId) clearInterval(timerId);
+  timerId = setInterval(() => {
+    totalSeconds--;
+    updateTimer();
+    if (totalSeconds <= 0) submitExam(true);
+  }, 1000);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function renderExam(enableInputs) {
+  const exam = exams[selectedExamKey];
+  currentQuestions = exam.questions;
+  currentExamTitle.textContent = exam.title + " - " + currentQuestions.length + " câu / " + exam.minutes + " phút";
+  form.innerHTML = "";
+
+  currentQuestions.forEach((item, index) => {
+    const qNo = index + 1;
+    const div = document.createElement("div");
+    div.className = "question";
+
+    let html = "";
+    if (item.caseText) {
+      html += `<div class="case">${escapeHtml(item.caseText)}</div>`;
+    }
+
+    html += `<h3>Câu ${qNo}. ${escapeHtml(item.q)}</h3>`;
+
+    item.options.forEach((opt, i) => {
+      const letter = String.fromCharCode(65 + i);
+      html += `
+        <label class="option">
+          <input type="radio" name="q${qNo}" value="${letter}" ${enableInputs ? "" : "disabled"}>
+          ${letter}. ${escapeHtml(opt)}
+        </label>
+      `;
+    });
+
+    html += `<div class="answer" id="answer${qNo}"></div>`;
+    div.innerHTML = html;
+    form.appendChild(div);
+  });
+
+  updateProgress();
+  document.querySelectorAll("input[type=radio]").forEach(input => {
+    input.addEventListener("change", updateProgress);
+  });
+}
+
+function updateProgress() {
+  const total = currentQuestions.length || exams[selectedExamKey].questions.length;
+  let count = 0;
+  for (let i = 1; i <= total; i++) {
+    if (document.querySelector(`input[name="q${i}"]:checked`)) count++;
+  }
+  progressText.textContent = `Đã chọn: ${count}/${total}`;
+}
+
+function updateTimer() {
+  const m = Math.floor(Math.max(totalSeconds, 0) / 60);
+  const s = Math.max(totalSeconds, 0) % 60;
+  timerEl.textContent = String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+}
+
+function submitExam(autoSubmit) {
+  if (submitted || !started) return;
+
+  if (!autoSubmit) {
+    const ok = confirm("Bạn có chắc chắn muốn nộp bài sớm?");
+    if (!ok) return;
+  }
+
+  submitted = true;
+  if (timerId) clearInterval(timerId);
+
+  let score = 0;
+  const total = currentQuestions.length;
+
+  currentQuestions.forEach((item, index) => {
+    const qNo = index + 1;
+    const selected = document.querySelector(`input[name="q${qNo}"]:checked`);
+    const userAnswer = selected ? selected.value : "Chưa chọn";
+    const answerBox = document.getElementById(`answer${qNo}`);
+
+    if (userAnswer === item.answer) {
+      score++;
+      answerBox.innerHTML = `<span class="correct">Đúng. Đáp án: ${item.answer}</span><div class="explain">${escapeHtml(item.explain || "")}</div>`;
+    } else {
+      answerBox.innerHTML = `<span class="wrong">Sai. Bạn chọn: ${userAnswer}. Đáp án đúng: ${item.answer}</span><div class="explain">${escapeHtml(item.explain || "")}</div>`;
+    }
+
+    answerBox.style.display = "block";
+    document.querySelectorAll(`input[name="q${qNo}"]`).forEach(input => input.disabled = true);
+  });
+
+  const point10 = (score * 10 / total).toFixed(2);
+  let level = "Cần ôn thêm";
+  if (score >= Math.ceil(total * 0.85)) level = "Rất tốt";
+  else if (score >= Math.ceil(total * 0.7)) level = "Đạt khá";
+  else if (score >= Math.ceil(total * 0.55)) level = "Trung bình";
+
+  resultEl.style.display = "block";
+  resultEl.innerHTML = `
+    <strong>Kết quả ${exams[selectedExamKey].title}:</strong> ${score}/${total} câu đúng<br>
+    <strong>Điểm quy đổi:</strong> ${point10}/10<br>
+    <strong>Xếp loại:</strong> ${level}<br>
+    ${autoSubmit ? "<strong>Lý do nộp:</strong> Hết thời gian." : "<strong>Lý do nộp:</strong> Nộp bài sớm."}
+    <div class="actions">
+      <button onclick="resetToMenu()">Làm đề khác</button>
+      <button class="secondary" onclick="window.print()">In / lưu PDF kết quả</button>
+    </div>
+  `;
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function resetToMenu() {
+  if (timerId) clearInterval(timerId);
+  submitted = false;
+  started = false;
+  form.innerHTML = "";
+  resultEl.style.display = "none";
+  document.getElementById("topBar").style.display = "none";
+  document.getElementById("startPanel").classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+</script>
+</body>
+</html>

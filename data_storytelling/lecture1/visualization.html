@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Visualization: Thông số AI</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">AI.EVOLUTION</a>
+        <div class="links">
+            <a href="index.html">Storytelling</a>
+            <a href="visualization.html" class="active">Visualization</a>
+            <a href="analysis.html">Analysis</a>
+            <a href="science.html">Science</a>
+        </div>
+    </nav>
+
+    <section class="container" style="padding-top: 15vh;">
+        <h1 class="text-gradient">Data Visualization</h1>
+        <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 3rem;">Trang này là một Dashboard thuần túy. Nó trực quan hóa dữ liệu lịch sử và kỹ thuật của AI qua các biểu đồ để người dùng tự do khám phá, không lồng ghép yếu tố kể chuyện hay kêu gọi hành động.</p>
+        
+        <div class="glass-panel" style="margin-bottom: 3rem;">
+            <h2>Sự tăng trưởng số lượng tham số của LLM (Theo hàm mũ)</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">Thể hiện sự bùng nổ về kích thước của các Mô hình ngôn ngữ lớn từ 2018 đến nay.</p>
+            <div class="chart-container">
+                <canvas id="llmChart"></canvas>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="glass-panel">
+                <h2>Vốn đầu tư vào AI Startups (Tỷ USD)</h2>
+                <div class="chart-container" style="height: 300px;">
+                    <canvas id="investmentChart"></canvas>
+                </div>
+            </div>
+            <div class="glass-panel">
+                <h2>Số lượng bài báo nghiên cứu AI</h2>
+                <div class="chart-container" style="height: 300px;">
+                    <canvas id="paperChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <script src="main.js"></script>
+</body>
+</html>

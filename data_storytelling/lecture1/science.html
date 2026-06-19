@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Science: Mô phỏng Dự đoán</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">AI.EVOLUTION</a>
+        <div class="links">
+            <a href="index.html">Storytelling</a>
+            <a href="visualization.html">Visualization</a>
+            <a href="analysis.html">Analysis</a>
+            <a href="science.html" class="active">Science</a>
+        </div>
+    </nav>
+
+    <div class="container" style="padding-top: 15vh;">
+        <h1 class="text-gradient">Data Science Predictive App</h1>
+        <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 3rem;">Khoa học Dữ liệu không chỉ là phân tích quá khứ, mà là <strong>xây dựng mô hình để dự đoán tương lai</strong>. Hãy nhập thông tin của bạn vào hệ thống mô phỏng Random Forest (Javascript) dưới đây để dự đoán tỷ lệ tự động hóa trong ngành nghề của bạn.</p>
+
+        <div class="grid-2">
+            <!-- Form Input -->
+            <div class="glass-panel">
+                <h2>Nhập thông số (Features)</h2>
+                <form id="prediction-form" style="margin-top: 2rem;" onsubmit="event.preventDefault(); runPrediction();">
+                    
+                    <div class="form-group">
+                        <label for="industry">Ngành nghề (Categorical Feature)</label>
+                        <select id="industry" required>
+                            <option value="tech">Công nghệ / Lập trình (Trọng số rủi ro: 0.6)</option>
+                            <option value="creative">Nghệ thuật / Sáng tạo (Trọng số rủi ro: 0.3)</option>
+                            <option value="admin">Hành chính / Nhập liệu (Trọng số rủi ro: 0.9)</option>
+                            <option value="healthcare">Y tế / Chăm sóc sức khỏe (Trọng số rủi ro: 0.4)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="experience">Số năm kinh nghiệm (Numerical Feature)</label>
+                        <input type="number" id="experience" min="0" max="50" value="5" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="repetitive">Tính chất lặp lại của công việc (%)</label>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <input type="range" id="repetitive" min="0" max="100" value="70" style="flex: 1;" oninput="document.getElementById('rep-val').innerText = this.value + '%'">
+                            <span id="rep-val" style="font-weight: bold; color: var(--accent-primary); width: 40px;">70%</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Chạy Mô Hình Dự Đoán</button>
+                </form>
+            </div>
+
+            <!-- Results Output -->
+            <div class="glass-panel" id="result-panel">
+                <h2>Kết quả Dự đoán (Output)</h2>
+                
+                <div id="loading" style="display: none; text-align: center; padding: 2rem;">
+                    <div class="tag floating" style="font-size: 1.2rem; background: rgba(0, 240, 255, 0.2);">Đang xử lý hàm mất mát (Loss Function)...</div>
+                </div>
+
+                <div id="prediction-result">
+                    <h3 style="color: var(--text-muted); font-weight: 400;">Xác suất bị tự động hóa trong 5 năm tới:</h3>
+                    <div style="font-size: 4rem; font-family: var(--font-heading); color: white; line-height: 1;" id="prob-value">
+                        --%
+                    </div>
+                    
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="prob-bar"></div>
+                    </div>
+
+                    <div style="margin-top: 2rem;">
+                        <h4 style="margin-bottom: 1rem; color: var(--accent-secondary);">Độ quan trọng của các biến (Feature Importance):</h4>
+                        <div class="chart-container" style="height: 200px;">
+                            <canvas id="importanceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

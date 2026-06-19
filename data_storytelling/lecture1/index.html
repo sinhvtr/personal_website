@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Storytelling: Lịch sử và Tương lai của AI</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">AI.EVOLUTION</a>
+        <div class="links">
+            <a href="index.html" class="active">Storytelling</a>
+            <a href="visualization.html">Visualization</a>
+            <a href="analysis.html">Analysis</a>
+            <a href="science.html">Science</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="text-gradient" style="font-size: 3.5rem; text-align: center; margin-bottom: 1rem;">Cuộc Đua Của Trí Tuệ</h1>
+        <p style="text-align: center; color: var(--text-muted); font-size: 1.2rem; max-width: 800px; margin: 0 auto;">Cuộn trang để xem cách trí tuệ nhân tạo đã từ từ thu hẹp khoảng cách với con người trong 3 kỹ năng cốt lõi: Nhận diện, Đọc hiểu, và Suy luận Logic qua từng giai đoạn lịch sử.</p>
+
+        <div class="scrolly-container">
+            
+            <div class="scrolly-text">
+                <div class="step-block" data-step="1">
+                    <h2 class="text-gradient">2010: Sự chênh lệch tuyệt đối</h2>
+                    <p style="font-size: 1.2rem; margin-top: 1rem; color: var(--text-muted);">
+                        Vào năm 2010, AI chỉ là những cỗ máy ngớ ngẩn. Việc nhận diện một con mèo trong bức ảnh đối với máy tính khó hơn việc tính toán quỹ đạo tên lửa. Con người vượt trội tuyệt đối ở mọi khía cạnh nhận thức.
+                    </p>
+                    <div style="margin-top: 2rem; padding-left: 1rem; border-left: 3px solid var(--accent-secondary); font-style: italic;">
+                        "Làm sao một cỗ máy có thể hiểu được ngôn ngữ phức tạp của con người?"
+                    </div>
+                </div>
+
+                <div class="step-block" data-step="2">
+                    <h2 class="text-gradient">2015: Khởi nguyên của Deep Learning</h2>
+                    <p style="font-size: 1.2rem; margin-top: 1rem; color: var(--text-muted);">
+                        Sự bùng nổ của mạng nơ-ron tích chập (CNN) và tập dữ liệu ImageNet đã thay đổi cục diện. AI bắt đầu nhận diện hình ảnh chính xác ngang ngửa một con người bình thường. Tuy nhiên, khả năng đọc hiểu văn bản và suy luận logic vẫn còn rất nguyên thủy.
+                    </p>
+                </div>
+
+                <div class="step-block" data-step="3">
+                    <h2 class="text-gradient">2024: Kỷ nguyên Tạo sinh</h2>
+                    <p style="font-size: 1.2rem; margin-top: 1rem; color: var(--text-muted);">
+                        Với sự xuất hiện của GPT-4, Gemini và các mô hình ngôn ngữ lớn khác, AI không chỉ đọc hiểu cực tốt mà còn vượt qua điểm chuẩn (benchmark) của con người trong các bài thi Luật (Bar Exam), Y khoa và lập trình suy luận logic. Lịch sử đã lật trang.
+                    </p>
+                    <p style="font-size: 1.2rem; margin-top: 1rem; color: var(--accent-primary); font-weight: 600;">
+                        Chúng ta không còn là giống loài duy nhất có khả năng suy luận phức tạp.
+                    </p>
+                </div>
+
+                <div class="step-block" data-step="4">
+                    <div class="glass-panel" style="background: radial-gradient(circle at top right, rgba(138,43,226,0.2), transparent);">
+                        <h2>Hành Động Của Bạn?</h2>
+                        <p style="color: var(--text-muted); margin: 1rem 0;">Dữ liệu không biết nói dối. AI đang dần đảm nhận những tác vụ phức tạp nhất. Hãy kiểm tra xem bạn cần làm gì tiếp theo.</p>
+                        
+                        <div class="form-group">
+                            <label>Bạn dành bao nhiêu % thời gian mỗi ngày cho công việc lặp đi lặp lại?</label>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <input type="range" id="routine-slider" min="0" max="100" value="50" style="flex: 1;">
+                                <span id="routine-val" style="font-weight: bold; color: var(--accent-primary);">50%</span>
+                            </div>
+                        </div>
+
+                        <div id="cta-message" style="margin: 1.5rem 0; padding: 1rem; background: rgba(255,0,0,0.1); border-left: 4px solid #ff0055; border-radius: 4px;">
+                            <strong>Nguy cơ cao!</strong> Nếu một nửa công việc của bạn là lặp lại, AI sẽ sớm tự động hóa chúng.
+                        </div>
+
+                        <button class="btn btn-primary" style="width: 100%;" onclick="alert('Đã đăng ký nhận Tư vấn Chuyển đổi số & Kỹ năng AI miễn phí!')">Nhận Tư Vấn Định Hướng AI Ngay</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sticky Chart Container -->
+            <div class="scrolly-chart-sticky">
+                <div class="glass-panel" style="width: 100%; height: 100%; display: flex; flex-direction: column;">
+                    <h3 style="text-align: center; margin-bottom: 1rem;">Điểm chuẩn AI so với Con người (Đường Base = 100%)</h3>
+                    <div class="chart-container">
+                        <canvas id="scrollyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

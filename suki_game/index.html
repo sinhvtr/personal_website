@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Suki Gắp Thú">
+    <meta name="theme-color" content="#FFD1DC">
+    <title>Suki Gắp Thú</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧸</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ===== MENU ===== -->
+    <section id="screen-menu" class="screen menu active">
+        <button class="icon-btn mute-btn corner" aria-label="Tắt/bật âm thanh">🔊</button>
+        <div class="floaties" aria-hidden="true">
+            <span>🧸</span><span>🐰</span><span>🐱</span><span>🐼</span><span>🐥</span><span>🐶</span>
+        </div>
+        <h1 class="title">Suki Gắp Thú <span class="title-bear">🧸</span></h1>
+        <p class="subtitle">Gắp thật nhiều thú bông trong <b>1 phút</b> nhé!</p>
+        <button id="btn-play" class="btn big">▶&#xFE0E; Chơi ngay</button>
+        <div class="menu-row">
+            <button id="btn-photos" class="btn lav">📸 Ảnh của Suki</button>
+            <button id="btn-album" class="btn mint">📒 Album</button>
+        </div>
+        <p class="best">🏆 Kỷ lục: <b id="menu-best">0</b></p>
+        <div class="howto">
+            <div class="howto-card">
+                <div class="howto-icon">📱</div>
+                <div>Bấm <b>◀&#xFE0E; ▶&#xFE0E;</b> hoặc chạm để di chuyển<br>Bấm <b>GẮP</b> để gắp</div>
+            </div>
+            <div class="howto-card">
+                <div class="howto-icon">⌨️</div>
+                <div><b>← →</b> để di chuyển<br><b>Space</b> để gắp</div>
+            </div>
+            <div class="howto-card">
+                <div class="howto-icon">🎮</div>
+                <div><b>D-pad</b> để di chuyển<br>Nút <b>✕</b> để gắp</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== GAME ===== -->
+    <section id="screen-game" class="screen game">
+        <div class="hud">
+            <div class="hud-left">
+                <div class="pill">⭐ <b id="score">0</b></div>
+                <div class="effects" id="hud-effects"></div>
+            </div>
+            <div class="kbd-hint">← → di chuyển · Space gắp · Esc tạm dừng</div>
+            <div class="hud-right">
+                <div class="pill" id="hud-time">⏱ <b id="time">60</b></div>
+                <button class="icon-btn mute-btn" aria-label="Tắt/bật âm thanh">🔊</button>
+                <button class="icon-btn" id="btn-pause" aria-label="Tạm dừng">⏸&#xFE0E;</button>
+            </div>
+        </div>
+        <div class="play-area">
+            <div class="pad pad-left">
+                <button class="pad-btn" data-hold="left" aria-label="Sang trái">◀&#xFE0E;</button>
+                <button class="pad-btn" data-hold="right" aria-label="Sang phải">▶&#xFE0E;</button>
+            </div>
+            <div class="canvas-wrap" id="canvas-wrap">
+                <canvas id="game-canvas"></canvas>
+            </div>
+            <div class="pad pad-right">
+                <button class="pad-btn grab-btn" id="btn-grab">GẮP</button>
+            </div>
+        </div>
+
+        <div class="overlay" id="pause-overlay" hidden>
+            <div class="card">
+                <h2>Tạm dừng</h2>
+                <button class="btn" id="btn-resume">▶&#xFE0E; Chơi tiếp</button>
+                <button class="btn mint" id="btn-restart">↻ Chơi lại</button>
+                <button class="btn lav" id="btn-home">🏠 Về menu</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ẢNH CỦA SUKI ===== -->
+    <section id="screen-photos" class="screen photos">
+        <div class="card photos-card">
+            <h2>📸 Ảnh của Suki</h2>
+            <p class="note">Ảnh chỉ lưu trên máy này, không gửi đi đâu cả.<br>
+                Trong game, ảnh sẽ thành thú bông đặc biệt <b>+50 điểm</b>!</p>
+            <div class="photo-grid" id="photo-grid"></div>
+            <p class="note error" id="photo-error" hidden></p>
+            <input type="file" id="photo-input" accept="image/*" hidden>
+            <button class="btn lav" id="btn-photos-back">🏠 Về menu</button>
+        </div>
+
+        <div class="overlay" id="crop-overlay" hidden>
+            <div class="card crop-card">
+                <h2>Chỉnh ảnh</h2>
+                <canvas id="crop-canvas" width="300" height="300"></canvas>
+                <label class="zoom-row">🔍 <input type="range" id="crop-zoom" min="1" max="3" step="0.01" value="1"></label>
+                <p class="note">Kéo ảnh để khuôn mặt nằm giữa vòng tròn</p>
+                <div class="end-actions">
+                    <button class="btn lav" id="btn-crop-cancel">Huỷ</button>
+                    <button class="btn mint" id="btn-crop-save">✔ Lưu ảnh</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ALBUM SƯU TẬP ===== -->
+    <section id="screen-album" class="screen album">
+        <div class="card album-card">
+            <h2>📒 Album của Suki</h2>
+            <p class="note" id="album-progress"></p>
+            <div class="album-grid" id="album-grid"></div>
+            <p class="note" id="album-combo"></p>
+            <button class="btn lav" id="btn-album-back">🏠 Về menu</button>
+        </div>
+    </section>
+
+    <!-- ===== KẾT THÚC ===== -->
+    <section id="screen-end" class="screen end">
+        <div class="card end-card">
+            <h2 id="end-title">Hết giờ rồi!</h2>
+            <div class="stars" id="end-stars"><span>★</span><span>★</span><span>★</span></div>
+            <div class="end-score"><span id="end-score">0</span> điểm</div>
+            <div class="new-record" id="end-record" hidden>🎉 Kỷ lục mới!</div>
+            <p class="end-best">🏆 Kỷ lục: <b id="end-best">0</b></p>
+            <p class="end-combo" id="end-combo" hidden></p>
+            <div class="new-items" id="end-new" hidden></div>
+            <div class="caught" id="end-caught"></div>
+            <div class="end-actions">
+                <button class="btn big" id="btn-again">↻ Chơi lại</button>
+                <button class="btn lav" id="btn-menu">🏠 Menu</button>
+            </div>
+            <p class="hint">Nhấn ✕ hoặc Space để chơi lại</p>
+        </div>
+    </section>
+
+    <div class="toast" id="toast" hidden></div>
+    <div class="boot-error" id="boot-error" hidden>
+        Không tải được game 😢<br>Hãy kiểm tra kết nối mạng rồi tải lại trang nhé.
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/matter-js@0.19.0/build/matter.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/items.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/photos.js"></script>
+    <script src="js/input.js"></script>
+    <script src="js/claw.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
